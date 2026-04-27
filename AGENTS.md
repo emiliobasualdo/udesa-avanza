@@ -122,7 +122,15 @@ udesa-avanza/
 ### 4.3 Before you commit
 Run through [`docs/checklists/pre-commit.md`](docs/checklists/pre-commit.md). It's short.
 
-### 4.4 After deploy
+### 4.4 After you commit — push and deploy by default
+**Always `git push` to `origin/main` after committing, unless the user explicitly says otherwise** (e.g. "don't push", "wait", "draft only"). Pushing to `main` triggers the Netlify production deploy automatically — that *is* the deploy step; there is nothing else to do. Do not wait for a separate "ok to push" prompt before pushing routine changes the user already approved.
+
+Exceptions where you should pause and confirm:
+- The change is risky, partial, or breaks the build locally.
+- You're force-pushing or rewriting history on `main`.
+- The user said to keep the work local / on a branch / behind a PR.
+
+### 4.5 After deploy
 Run through [`docs/checklists/post-deploy.md`](docs/checklists/post-deploy.md). It's also short.
 
 ---
@@ -204,3 +212,6 @@ Code is MIT — see `LICENSE`.
 ---
 
 *Last reviewed: 2026-04-27 — when you read or edit this file, update this date.*
+
+<!-- 2026-04-27: added §4.4 — push-and-deploy is the default after committing -->
+

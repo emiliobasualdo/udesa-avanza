@@ -6,9 +6,13 @@ The format is based on [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.
 
 ## [Unreleased]
 
+### Added
+- **AGENTS.md §4.4 — push-and-deploy is the default**: after committing, agents push to `origin/main` without waiting for a separate "ok to push". Pushing *is* the deploy step (Netlify auto-publishes from `main`). Pause only for risky/partial changes or when the user says to hold.
+
 ### Changed
 - **Header**: removed the centered "UdeSA Avanza" brand mark from the navbar. Header is now flex (menu button left, "Suscribirme" pill right). Cleaner, more breathing room.
 - **Capítulo 07 (Equipo)**: brand mark relocated here as a full chapter signature — CEU logo + "UdeSA Avanza" italic, "Centro de Estudiantes Universitarios" caption, separated by a hairline rule.
+- **`assets/og-image.jpg`**: replaced the campus photo with a branded composition — UdeSA logo top-left, CEU mark centered, small "UdeSA Avanza" wordmark underneath. 1200×630, 23.8 KB.
 
 ### Fixed
 - **Hero headline word-spacing**: "donde<br>las" smushed to "dondelas" when `<br>` was hidden on mobile. Fixed by inserting a literal space before `<br>`. Same fix applied to closing headline ("importa.<br>Sumate").
