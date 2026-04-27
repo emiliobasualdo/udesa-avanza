@@ -16,11 +16,9 @@
 [context.deploy-preview]
   command = "echo 'Preview deploy'"
 
-# Compress images automatically
-[[plugins]]
-  package = "netlify-plugin-image-optim"
-
 # Lighthouse CI on every deploy
+# Note: image-optim plugin removed (upstream bug in v0.4.0 — re-evaluate later)
+# Note: auto-sitemap plugin removed; we maintain sitemap.xml by hand (see docs/specs/seo.md)
 [[plugins]]
   package = "@netlify/plugin-lighthouse"
 
@@ -28,14 +26,10 @@
     output_path = "reports/lighthouse.html"
 
   [plugins.inputs.thresholds]
-    performance   = 0.80
-    accessibility = 0.90
+    performance    = 0.80
+    accessibility  = 0.90
     best-practices = 0.90
-    seo           = 0.95
-
-# Submit sitemap automatically
-[[plugins]]
-  package = "@netlify/plugin-sitemap"
+    seo            = 0.95
 
 # Headers handled in /_headers (Netlify reads it).
 # Redirects handled in /_redirects.
