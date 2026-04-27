@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.
 
 ### Added
 - **AGENTS.md §4.4 — push-and-deploy is the default**: after committing, agents push to `origin/main` without waiting for a separate "ok to push". Pushing *is* the deploy step (Netlify auto-publishes from `main`). Pause only for risky/partial changes or when the user says to hold.
+- **Custom domain configured on Netlify**: `ceu.udesa.edu.ar` registered as the primary custom domain on the Netlify site (default fallback `udesa-avanza.netlify.app` stays active). SSL via Let's Encrypt will provision automatically once UdeSA IT adds the DNS record (`ceu CNAME udesa-avanza.netlify.app.`). Full procedure in [`docs/specs/deployment.md` §10](docs/specs/deployment.md).
 
 ### Changed
 - **Header**: removed the centered "UdeSA Avanza" brand mark from the navbar. Header is now flex (menu button left, "Suscribirme" pill right). Cleaner, more breathing room.

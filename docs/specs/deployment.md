@@ -99,7 +99,62 @@ The smoke-test job in the workflow runs:
 
 If any fails, the workflow marks the deploy red. The smoke test is **not** the same as the manual checklist in `docs/checklists/post-deploy.md` — both should be run.
 
-## 10. Future work
+## 10. Custom domain & SSL — `ceu.udesa.edu.ar`
+
+The site is configured on Netlify with `ceu.udesa.edu.ar` as the **primary custom domain** and `udesa-avanza.netlify.app` as the default fallback. The Netlify side of the configuration is in place; the DNS side must be coordinated with **Universidad de San Andrés IT**, who controls the `udesa.edu.ar` zone.
+
+### 10.1 Required DNS record (request from UdeSA IT)
+
+```
+Name:  ceu
+Type:  CNAME
+Value: udesa-avanza.netlify.app.
+TTL:   3600
+```
+
+If the UdeSA DNS provider doesn't allow CNAME at that level, fall back to A records pointing at Netlify's load balancer (`75.2.60.5`, `99.83.231.61`, plus the IPv6 equivalents from `dig apex-loadbalancer.netlify.com AAAA`). CNAME is preferred — Netlify rotates IPs.
+
+### 10.2 What happens after DNS lands
+
+1. Netlify detects the DNS record and runs the Let's Encrypt HTTP-01 challenge automatically. Usually <1 hour, occasionally up to 24 h.
+2. The cert appears on the site dashboard; `https://ceu.udesa.edu.ar/` starts serving with a valid lock.
+3. **Then** (and only then) flip these:
+   - `force_ssl: true` on the Netlify site (`PATCH /api/v1/sites/{id}` with `{"force_ssl": true}`) — forces HTTPS redirect.
+   - Canonical / sitemap / OG / Twitter / JSON-LD URLs in `index.html`, `sitemap.xml`, and `robots.txt` from `https://udesa-avanza.netlify.app/...` to `https://ceu.udesa.edu.ar/...`.
+   - `manifest.webmanifest` `start_url` if it's absolute.
+4. Submit the new canonical URL to Google Search Console and request a recrawl.
+
+### 10.3 Verifying
+
+```bash
+# DNS
+dig +short ceu.udesa.edu.ar CNAME
+
+# Cert
+curl -vI https://ceu.udesa.edu.ar 2>&1 | grep -E "subject:|issuer:|HTTP/"
+
+# Netlify-side state
+TOKEN=$(jq -r '.users | to_entries[0].value.auth.token' ~/Library/Preferences/netlify/config.json)
+curl -sS -H "Authorization: Bearer $TOKEN" \
+  https://api.netlify.com/api/v1/sites/a6ab5a23-a877-4a38-aa0e-545f5d4ed146 \
+  | jq '{custom_domain, ssl, ssl_url, force_ssl}'
+```
+
+### 10.4 Rolling back
+
+To revert the Netlify side (e.g., if the subdomain has to move elsewhere):
+
+```bash
+curl -sS -X PATCH -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"custom_domain": null}' \
+  https://api.netlify.com/api/v1/sites/a6ab5a23-a877-4a38-aa0e-545f5d4ed146
+```
+
+DNS records are managed by UdeSA IT, not by us.
+
+---
+
+## 11. Future work
 
 - Atomic deploys with feature flags (Netlify supports this natively, not used yet).
 - `IndexNow` ping on every prod deploy.
