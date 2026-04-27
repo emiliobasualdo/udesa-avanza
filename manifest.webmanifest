@@ -1,0 +1,44 @@
+{
+  "name": "UdeSA Avanza — Centro de Estudiantes Universitarios",
+  "short_name": "UdeSA Avanza",
+  "description": "Centro de Estudiantes Universitarios de la Universidad de San Andrés. Propuestas, beneficios y voz estudiantil.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#162D24",
+  "theme_color": "#162D24",
+  "lang": "es-AR",
+  "dir": "ltr",
+  "categories": ["education", "social"],
+  "icons": [
+    {
+      "src": "assets/logo-transparent.png",
+      "type": "image/png",
+      "sizes": "938x938",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "32x32 48x48"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Beneficios",
+      "url": "/#benefits-anchor",
+      "description": "Ver beneficios vigentes del CEU"
+    },
+    {
+      "name": "Propuestas",
+      "url": "/#programs-anchor",
+      "description": "Las 8 propuestas del CEU"
+    },
+    {
+      "name": "Equipo",
+      "url": "/#equipo-anchor",
+      "description": "Mesa Ejecutiva 2026"
+    }
+  ]
+}

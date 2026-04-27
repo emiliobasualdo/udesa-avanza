@@ -1,0 +1,39 @@
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Node (in case anyone adds tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Netlify
+.netlify/
+.netlify/state.json
+
+# Reports
+reports/
+.lighthouseci/
+
+# Local secrets — NEVER commit
+.env
+.env.*
+!.env.example
+
+# Local server logs
+*.log
+
+# Macros / scratch
+scratch/
+tmp/

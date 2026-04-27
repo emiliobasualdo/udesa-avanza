@@ -1,0 +1,118 @@
+# Deploy on every push to main.
+# Spec: docs/specs/deployment.md
+# Doc-update rule: any change to this file MUST update docs/specs/deployment.md
+
+name: Deploy to Netlify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Netlify CLI
+        run: npm install --global netlify-cli@latest
+
+      - name: Validate static files
+        run: |
+          test -f index.html
+          test -f robots.txt
+          test -f sitemap.xml
+          test -f manifest.webmanifest
+          test -d assets
+          echo "✓ All required files present"
+
+      - name: Deploy to Netlify (production)
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          netlify deploy \
+            --dir=. \
+            --prod \
+            --message "Auto-deploy from ${{ github.sha }}" \
+            --auth $NETLIFY_AUTH_TOKEN \
+            --site $NETLIFY_SITE_ID
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: Deploy to Netlify (preview)
+        if: github.event_name == 'pull_request'
+        run: |
+          netlify deploy \
+            --dir=. \
+            --message "PR #${{ github.event.pull_request.number }} preview" \
+            --auth $NETLIFY_AUTH_TOKEN \
+            --site $NETLIFY_SITE_ID \
+            --json > deploy.json
+          echo "PREVIEW_URL=$(cat deploy.json | jq -r '.deploy_url')" >> $GITHUB_ENV
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: Comment preview URL on PR
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            🚀 **Preview deployed:** ${{ env.PREVIEW_URL }}
+
+  smoke-test:
+    name: Smoke test live site
+    needs: deploy
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Wait for deploy to settle
+        run: sleep 20
+
+      - name: Check homepage
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://udesa-avanza.netlify.app/)
+          echo "Homepage: $STATUS"
+          test "$STATUS" = "200"
+
+      - name: Check robots.txt
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://udesa-avanza.netlify.app/robots.txt)
+          test "$STATUS" = "200"
+
+      - name: Check sitemap.xml
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://udesa-avanza.netlify.app/sitemap.xml)
+          test "$STATUS" = "200"
+
+      - name: Check critical assets
+        run: |
+          for f in favicon.ico logo-transparent.png udesa-logo.jpg campus-1.jpg ingresantes-2026-2-hd.mp4; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://udesa-avanza.netlify.app/assets/$f")
+            echo "$f: $STATUS"
+            test "$STATUS" = "200"
+          done

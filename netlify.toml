@@ -1,0 +1,41 @@
+# Netlify build & deploy config — UdeSA Avanza
+# Spec: docs/specs/deployment.md
+
+[build]
+  publish    = "."
+  command    = "echo 'Static site — nothing to build.'"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Production context
+[context.production]
+  command = "echo 'Production deploy'"
+
+# Branch deploys (every PR / branch gets its own URL)
+[context.deploy-preview]
+  command = "echo 'Preview deploy'"
+
+# Compress images automatically
+[[plugins]]
+  package = "netlify-plugin-image-optim"
+
+# Lighthouse CI on every deploy
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+  [plugins.inputs]
+    output_path = "reports/lighthouse.html"
+
+  [plugins.inputs.thresholds]
+    performance   = 0.80
+    accessibility = 0.90
+    best-practices = 0.90
+    seo           = 0.95
+
+# Submit sitemap automatically
+[[plugins]]
+  package = "@netlify/plugin-sitemap"
+
+# Headers handled in /_headers (Netlify reads it).
+# Redirects handled in /_redirects.

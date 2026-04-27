@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UdeSA Avanza — Versiones del Centro de Estudiantes</title>
+<link rel="icon" href="assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --blue: #00529B;
+    --green: #2DA343;
+    --pink: #C183B9;
+    --ink: #122535;
+    --paper: #f4f1ea;
+  }
+  html, body {
+    background: #06101e;
+    color: #fff;
+    font-family: 'Work Sans', sans-serif;
+    min-height: 100vh;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(0,82,155,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 80%, rgba(193,131,185,0.2) 0%, transparent 60%),
+      #06101e;
+    padding: 80px 40px;
+  }
+  .top {
+    max-width: 1400px; margin: 0 auto 60px;
+    display: flex; justify-content: space-between; align-items: end; gap: 40px; flex-wrap: wrap;
+  }
+  .top-left { display: flex; align-items: center; gap: 20px; }
+  .top-left img { height: 60px; border-radius: 8px; }
+  h1 {
+    font-family: 'Amiri', serif; font-weight: 400;
+    font-size: clamp(36px, 5vw, 64px); letter-spacing: -0.02em; line-height: 1;
+  }
+  h1 em { font-style: italic; color: var(--green); }
+  .sub { color: rgba(255,255,255,0.55); font-size: 15px; margin-top: 8px; line-height: 1.5; }
+  .udesa-mark {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 18px; border-radius: 8px;
+  }
+  .udesa-mark img { height: 44px; mix-blend-mode: screen; filter: brightness(1.1); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  a.card {
+    display: block;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 32px;
+    text-decoration: none;
+    color: #fff;
+    transition: all .4s cubic-bezier(.2,.8,.2,1);
+    position: relative;
+    overflow: hidden;
+    min-height: 240px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  a.card::before {
+    content: ''; position: absolute; inset: -1px; padding: 1px; border-radius: 20px;
+    background: linear-gradient(135deg, var(--blue), transparent 30%, transparent 70%, var(--green));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0; transition: opacity .4s;
+  }
+  a.card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.05); }
+  a.card:hover::before { opacity: 1; }
+  .num { font-size: 12px; color: var(--green); letter-spacing: 0.25em; font-weight: 600; }
+  .name { font-family: 'Amiri', serif; font-size: 32px; line-height: 1.05; letter-spacing: -0.02em; margin: 14px 0 12px; }
+  .name em { font-style: italic; color: var(--green); }
+  .desc { color: rgba(255,255,255,0.55); font-size: 14px; line-height: 1.55; }
+  .tag {
+    display: inline-flex; gap: 8px; flex-wrap: wrap; margin-top: auto; padding-top: 24px;
+  }
+  .tag span {
+    padding: 4px 10px; background: rgba(0,82,155,0.15); color: #84b3e0;
+    font-size: 10px; border-radius: 100px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+  }
+  .footer-line {
+    max-width: 1400px; margin: 80px auto 0; padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; justify-content: space-between; gap: 24px;
+    font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="top-left">
+      <img src="assets/logo.jpg" alt="CEU" />
+      <div>
+        <h1>UdeSA <em>Avanza</em></h1>
+        <div class="sub">4 versiones de la landing del Centro de Estudiantes Universitarios</div>
+      </div>
+    </div>
+    <a class="udesa-mark" href="https://www.udesa.edu.ar" target="_blank">
+      <img src="assets/udesa-logo.jpg" alt="Universidad de San Andrés" />
+    </a>
+  </div>
+
+  <div class="grid">
+    <a class="card" href="v1-cinematic.html">
+      <div>
+        <div class="num">VERSIÓN 01</div>
+        <div class="name"><em>Cinematic</em></div>
+        <div class="desc">Editorial y atmosférica. Hero con video institucional, parallax sutil, paleta UDESA cream + navy + gold con tipografía Amiri serif.</div>
+      </div>
+      <div class="tag"><span>VIDEO HERO</span><span>SERIF</span><span>PARALLAX</span></div>
+    </a>
+    <a class="card" href="v4-bento.html">
+      <div>
+        <div class="num">VERSIÓN 04</div>
+        <div class="name"><em>Bento</em> Interactive</div>
+        <div class="desc">Grilla bento 12-col en dark mode. Tarjetas con tilt 3D al hover, video en hero, marquee animado, equalizer y stats.</div>
+      </div>
+      <div class="tag"><span>BENTO</span><span>TILT 3D</span><span>DARK</span></div>
+    </a>
+    <a class="card" href="v5-immersive.html">
+      <div>
+        <div class="num">VERSIÓN 05</div>
+        <div class="name"><em>Inmersivo</em> WebGL</div>
+        <div class="desc">Escena Three.js con partículas constelación + cores wireframe. Cursor custom, branding UDESA oficial (#00529B).</div>
+      </div>
+      <div class="tag"><span>THREE.JS</span><span>SHADERS</span><span>UDESA</span></div>
+    </a>
+    <a class="card" href="v6-springs.html">
+      <div>
+        <div class="num">VERSIÓN 06</div>
+        <div class="name"><em>Editorial</em> Springs</div>
+        <div class="desc">Inspirada en springs.estate. Cream + verde forest, capítulos con sticky scroll, gallery drag, preloader, hero video.</div>
+      </div>
+      <div class="tag"><span>SPRINGS</span><span>PRELOADER</span><span>GALLERY</span></div>
+    </a>
+  </div>
+
+  <div class="footer-line">
+    <span>© 2026 UdeSA Avanza · Centro de Estudiantes Universitarios</span>
+    <span>Quaerere Verum · Victoria, Buenos Aires</span>
+  </div>
+</body>
+</html>

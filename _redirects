@@ -1,0 +1,10 @@
+# Netlify _redirects
+# Force HTTPS handled by Netlify automatically.
+
+# Friendly aliases
+/instagram   https://instagram.com/udesavanza_ceu  301
+/ig          https://instagram.com/udesavanza_ceu  301
+/udesa       https://www.udesa.edu.ar              301
+
+# 404 → index (single-page anchors)
+/*           /index.html                           200

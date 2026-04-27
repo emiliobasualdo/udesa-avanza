@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UdeSA Avanza · Bento</title>
+<link rel="icon" href="assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b1220;
+    --bg-2: #131c2e;
+    --bg-3: #1c2741;
+    --fg: #f4f1ea;
+    --fg-2: rgba(244,241,234,0.7);
+    --fg-3: rgba(244,241,234,0.45);
+    --line: rgba(244,241,234,0.08);
+    --blue: #00529B;
+    --blue-light: #4a86d0;
+    --green: #2DA343;
+    --pink: #C183B9;
+    --gold: #ffce5c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--fg); font-family: 'Work Sans', sans-serif; overflow-x: hidden; }
+  ::selection { background: var(--blue); color: var(--fg); }
+  a { color: inherit; text-decoration: none; }
+
+  nav {
+    position: fixed; top: 16px; left: 16px; right: 16px; z-index: 100;
+    padding: 12px 20px; display: flex; align-items: center; justify-content: space-between;
+    background: rgba(11,18,32,0.85); backdrop-filter: blur(24px);
+    border: 1px solid var(--line); border-radius: 16px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo img { height: 36px; width: auto; border-radius: 6px; }
+  .logo-name { font-family: 'Amiri', serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .logo-name small { display: block; font-family: 'Work Sans', sans-serif; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; margin-top: 1px; }
+  .nav-menu { display: flex; gap: 4px; list-style: none; }
+  .nav-menu a {
+    padding: 8px 14px; border-radius: 10px; font-size: 13px; color: var(--fg-2);
+    transition: all .25s; font-weight: 500;
+  }
+  .nav-menu a:hover { background: rgba(255,255,255,0.06); color: var(--fg); }
+  .nav-cta {
+    padding: 10px 18px; border-radius: 12px; font-size: 13px; font-weight: 600;
+    background: var(--green); color: var(--fg); transition: all .25s;
+  }
+  .nav-cta:hover { transform: scale(1.04); box-shadow: 0 0 20px rgba(45,163,67,0.4); }
+
+  .container { padding: 92px 16px 16px; max-width: 1480px; margin: 0 auto; }
+
+  .bento {
+    display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 110px; gap: 16px;
+  }
+  .cell {
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: 24px;
+    padding: 28px; position: relative; overflow: hidden;
+    transition: transform .5s cubic-bezier(.2,.8,.2,1), border-color .3s;
+    transform-style: preserve-3d; will-change: transform;
+  }
+  .cell:hover { border-color: rgba(255,255,255,0.18); }
+
+  /* HERO cell */
+  .hero-cell {
+    grid-column: span 8; grid-row: span 5; padding: 48px;
+    position: relative; isolation: isolate;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .hero-cell .hero-vid {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;
+  }
+  .hero-cell::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(145deg, rgba(0,82,155,0.85) 0%, rgba(11,18,32,0.65) 60%, rgba(193,131,185,0.35) 100%);
+  }
+  .hero-cell .pill {
+    display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
+    padding: 6px 12px; border-radius: 100px;
+    background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 12px; color: var(--fg);
+  }
+  .hero-cell .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(45,163,67,0.3); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(45,163,67,0); } }
+  .hero-cell h1 {
+    font-family: 'Amiri', serif; font-size: clamp(44px, 6vw, 88px); line-height: 1; letter-spacing: -0.025em;
+    margin-top: 24px; max-width: 800px;
+  }
+  .hero-cell h1 em { font-style: italic; color: var(--gold); }
+  .hero-cell .desc { color: rgba(244,241,234,0.92); font-size: 18px; line-height: 1.5; max-width: 580px; margin-top: 24px; }
+  .hero-cell .ctas { margin-top: 32px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-cell .btn {
+    padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 600;
+    transition: all .25s; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .hero-cell .btn.primary { background: var(--fg); color: var(--bg); }
+  .hero-cell .btn.primary:hover { transform: scale(1.03); }
+  .hero-cell .btn.ghost { background: rgba(255,255,255,0.08); color: var(--fg); border: 1px solid rgba(255,255,255,0.18); backdrop-filter: blur(8px); }
+  .hero-cell .btn.ghost:hover { background: rgba(255,255,255,0.16); }
+
+  /* Stats */
+  .stat-cell { grid-column: span 4; grid-row: span 2; padding: 24px; }
+  .stat-cell .lbl { font-size: 11px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
+  .stat-cell .val { font-family: 'Amiri', serif; font-size: clamp(40px, 4.5vw, 64px); line-height: 1; letter-spacing: -0.025em; margin-top: 8px; }
+  .stat-cell .det { color: var(--fg-2); font-size: 13px; margin-top: 6px; }
+  .stat-cell .icon-mini {
+    position: absolute; top: 24px; right: 24px;
+    width: 36px; height: 36px; border-radius: 10px;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; color: var(--fg-2);
+  }
+
+  /* Calendar */
+  .cal-cell { grid-column: span 5; grid-row: span 4; padding: 28px; display: flex; flex-direction: column; }
+  .cell-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .cell-head .ttl { font-size: 14px; font-weight: 600; }
+  .cell-head .meta { font-size: 11px; color: var(--fg-3); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+  .next-event {
+    padding: 20px; border-radius: 16px;
+    background: linear-gradient(135deg, rgba(0,82,155,0.25), rgba(0,82,155,0.04));
+    border: 1px solid rgba(0,82,155,0.3); margin-bottom: 12px;
+  }
+  .next-event .head { display: flex; justify-content: space-between; align-items: start; }
+  .next-event .date-x { font-family: 'Amiri', serif; font-size: 36px; line-height: 1; letter-spacing: -0.025em; }
+  .next-event .month-x { font-size: 11px; color: var(--fg-2); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 4px; font-weight: 600; }
+  .next-event .badge { font-size: 11px; padding: 4px 10px; border-radius: 100px; background: var(--green); color: white; font-weight: 600; }
+  .next-event h4 { font-family: 'Amiri', serif; font-size: 22px; margin-top: 16px; letter-spacing: -0.01em; }
+  .next-event p { color: var(--fg-2); font-size: 13px; margin-top: 6px; line-height: 1.5; }
+  .event-row { display: flex; gap: 14px; align-items: center; padding: 12px 14px; border-radius: 12px; transition: background .25s; cursor: pointer; }
+  .event-row:hover { background: rgba(255,255,255,0.04); }
+  .event-row .dt { width: 44px; height: 44px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .event-row .dt .dn { font-family: 'Amiri', serif; font-size: 18px; line-height: 1; }
+  .event-row .dt .dm { font-size: 9px; color: var(--fg-3); text-transform: uppercase; }
+  .event-row .info { flex: 1; min-width: 0; }
+  .event-row .info h5 { font-size: 14px; font-weight: 600; }
+  .event-row .info p { color: var(--fg-3); font-size: 11px; margin-top: 2px; }
+
+  /* Sport image cell */
+  .sport-cell { grid-column: span 3; grid-row: span 4; padding: 0; overflow: hidden; }
+  .sport-img { width: 100%; height: 100%; position: relative; background-image: url('assets/campus-3.jpg'); background-size: cover; background-position: center; transition: transform .8s; }
+  .sport-cell:hover .sport-img { transform: scale(1.08); }
+  .sport-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 35%, rgba(11,18,32,0.95) 100%);
+    display: flex; flex-direction: column; justify-content: space-between; padding: 28px;
+  }
+  .sport-pill { align-self: flex-start; padding: 6px 12px; border-radius: 100px; background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); font-size: 11px; font-weight: 500; }
+  .sport-bottom h3 { font-family: 'Amiri', serif; font-size: 28px; letter-spacing: -0.02em; }
+  .sport-bottom p { color: var(--fg-2); font-size: 13px; margin-top: 4px; line-height: 1.5; }
+  .sport-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  .sport-tags span { padding: 4px 10px; border-radius: 100px; background: rgba(255,255,255,0.1); font-size: 10px; font-weight: 500; }
+
+  /* Mission/quote */
+  .quote-cell { grid-column: span 4; grid-row: span 3; padding: 32px; background: linear-gradient(135deg, var(--bg-2), var(--bg-3)); display: flex; flex-direction: column; justify-content: space-between; }
+  .quote-cell .mark { font-family: 'Amiri', serif; font-size: 90px; line-height: 0.5; color: var(--green); }
+  .quote-cell p { font-family: 'Amiri', serif; font-style: italic; font-size: 22px; font-weight: 400; line-height: 1.35; letter-spacing: -0.01em; }
+  .quote-cell .src { font-size: 11px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
+
+  /* Beneficios */
+  .ben-cell { grid-column: span 4; grid-row: span 3; padding: 28px; }
+  .ben-cell .head { display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px; }
+  .ben-cell h3 { font-family: 'Amiri', serif; font-size: 28px; letter-spacing: -0.02em; }
+  .ben-cell .pct { background: linear-gradient(135deg, var(--green), var(--blue-light)); -webkit-background-clip: text; background-clip: text; color: transparent; font-family: 'Amiri', serif; font-size: 56px; line-height: 0.9; letter-spacing: -0.04em; font-weight: 700; }
+  .ben-list { display: grid; gap: 8px; }
+  .ben-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,0.03); transition: background .25s; cursor: pointer; }
+  .ben-item:hover { background: rgba(255,255,255,0.07); }
+  .ben-item .name { font-size: 13px; font-weight: 500; }
+  .ben-item .cat { font-size: 10px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+  .ben-item .disc { font-size: 13px; color: var(--green); font-weight: 700; }
+
+  /* Suscripción - email card */
+  .sub-cell {
+    grid-column: span 4; grid-row: span 3; padding: 28px;
+    background: linear-gradient(135deg, rgba(0,82,155,0.7), rgba(193,131,185,0.4) 80%);
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .sub-cell::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 24px 24px; pointer-events: none;
+  }
+  .sub-cell > * { position: relative; z-index: 1; }
+  .sub-cell h3 { font-family: 'Amiri', serif; font-size: 32px; letter-spacing: -0.02em; line-height: 1.05; }
+  .sub-cell p { color: rgba(244,241,234,0.85); font-size: 13px; margin-top: 10px; line-height: 1.5; }
+  .sub-form { display: flex; gap: 8px; margin-top: 16px; padding: 4px; background: rgba(255,255,255,0.12); border-radius: 100px; backdrop-filter: blur(8px); }
+  .sub-form input { flex: 1; background: transparent; border: 0; padding: 10px 14px; color: var(--fg); font-size: 13px; outline: none; font-family: inherit; }
+  .sub-form input::placeholder { color: rgba(244,241,234,0.6); }
+  .sub-form button { padding: 10px 18px; border-radius: 100px; background: var(--fg); color: var(--bg); border: 0; font-weight: 600; cursor: pointer; font-size: 13px; transition: transform .25s; font-family: inherit; }
+  .sub-form button:hover { transform: scale(1.04); }
+
+  /* Voz cell - propuestas */
+  .voz-cell {
+    grid-column: span 4; grid-row: span 3;
+    background: linear-gradient(135deg, rgba(45,163,67,0.85) 0%, rgba(0,82,155,0.5) 100%);
+    padding: 28px; display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .voz-cell h3 { font-family: 'Amiri', serif; font-size: 32px; letter-spacing: -0.025em; line-height: 1.05; }
+  .voz-cell h3 em { font-style: italic; color: var(--gold); }
+  .voz-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .voz-stat { padding: 12px; background: rgba(255,255,255,0.12); border-radius: 12px; backdrop-filter: blur(8px); }
+  .voz-stat .v { font-family: 'Amiri', serif; font-size: 26px; line-height: 1; }
+  .voz-stat .l { font-size: 10px; color: rgba(244,241,234,0.85); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+
+  /* Reps */
+  .reps-cell { grid-column: span 8; grid-row: span 3; padding: 28px; }
+  .reps-row-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+  .rep-mini { padding: 18px; border-radius: 14px; background: rgba(255,255,255,0.03); transition: all .3s; cursor: pointer; }
+  .rep-mini:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
+  .rep-mini .av {
+    width: 52px; height: 52px; border-radius: 14px; margin-bottom: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Amiri', serif; font-weight: 700; color: white; font-size: 20px;
+  }
+  .rep-mini:nth-child(1) .av { background: linear-gradient(135deg, var(--blue), var(--blue-light)); }
+  .rep-mini:nth-child(2) .av { background: linear-gradient(135deg, var(--green), var(--blue)); }
+  .rep-mini:nth-child(3) .av { background: linear-gradient(135deg, var(--pink), var(--blue)); }
+  .rep-mini h5 { font-size: 15px; font-weight: 600; }
+  .rep-mini .role { font-size: 12px; color: var(--fg-2); margin-top: 2px; }
+  .rep-mini .dept { font-size: 10px; color: var(--fg-3); margin-top: 8px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+
+  /* Locker cell */
+  .locker-cell {
+    grid-column: span 4; grid-row: span 3; padding: 0; overflow: hidden;
+    background-image: linear-gradient(180deg, rgba(11,18,32,0.4) 0%, rgba(11,18,32,0.92) 100%), url('assets/campus-2.jpg');
+    background-size: cover; background-position: center;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .locker-cell .lc-content { padding: 28px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+  .locker-cell .ttl { font-size: 11px; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; }
+  .locker-cell h4 { font-family: 'Amiri', serif; font-size: 32px; letter-spacing: -0.02em; line-height: 1.05; margin-top: 8px; }
+  .locker-cell .price { font-family: 'Amiri', serif; font-size: 36px; color: var(--gold); margin-top: 16px; letter-spacing: -0.02em; }
+  .locker-cell .price small { display: block; font-family: 'Work Sans', sans-serif; font-size: 11px; color: var(--fg-2); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; font-weight: 600; }
+
+  /* Marquee */
+  .marquee-cell { grid-column: span 12; grid-row: span 1; padding: 0; display: flex; align-items: center; overflow: hidden; background: linear-gradient(90deg, var(--blue), var(--green), var(--pink), var(--blue)); background-size: 300% 100%; animation: rainbow 12s linear infinite; }
+  @keyframes rainbow { to { background-position: 300% 0; } }
+  .marquee-track { display: flex; gap: 60px; animation: marquee 35s linear infinite; white-space: nowrap; }
+  .marquee-track span { font-family: 'Amiri', serif; font-size: 28px; letter-spacing: -0.01em; color: var(--bg); display: flex; align-items: center; gap: 60px; }
+  .marquee-track span::after { content: '✦'; font-family: 'Work Sans', sans-serif; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* CTA */
+  .cta-cell {
+    grid-column: span 12; grid-row: span 4;
+    background:
+      linear-gradient(135deg, rgba(0,82,155,0.85), rgba(11,18,32,0.4) 50%, rgba(193,131,185,0.5)),
+      url('assets/ingresantes-7.jpg');
+    background-size: cover; background-position: center;
+    padding: 64px 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-cell h2 {
+    font-family: 'Amiri', serif; font-size: clamp(44px, 7vw, 96px); line-height: 1.0;
+    letter-spacing: -0.03em; max-width: 1100px;
+  }
+  .cta-cell h2 em { font-style: italic; color: var(--gold); }
+  .cta-cell p { color: rgba(244,241,234,0.9); font-size: 18px; margin-top: 20px; max-width: 600px; }
+  .cta-cell .cta-btn {
+    margin-top: 32px; display: inline-flex; align-items: center; gap: 10px;
+    padding: 18px 36px; border-radius: 100px; font-size: 15px; font-weight: 600;
+    background: var(--fg); color: var(--bg); transition: transform .3s;
+  }
+  .cta-cell .cta-btn:hover { transform: scale(1.05); }
+
+  /* Footer */
+  .footer-cell { grid-column: span 12; grid-row: span 3; padding: 32px; }
+  .footer-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 32px; }
+  .footer-row h5 { font-size: 11px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; font-weight: 600; }
+  .footer-row ul { list-style: none; }
+  .footer-row li { margin-bottom: 8px; }
+  .footer-row a { color: var(--fg-2); font-size: 13px; transition: color .3s; }
+  .footer-row a:hover { color: var(--fg); }
+  .footer-row .brand p { color: var(--fg-2); font-size: 13px; line-height: 1.6; max-width: 280px; margin-top: 12px; }
+  .footer-bottom { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; font-size: 11px; color: var(--fg-3); }
+
+  @media (max-width: 1100px) {
+    .bento { grid-template-columns: repeat(6, 1fr); grid-auto-rows: 100px; }
+    .hero-cell, .reps-cell, .marquee-cell, .cta-cell, .footer-cell { grid-column: span 6; }
+    .stat-cell { grid-column: span 3; grid-row: span 2; }
+    .cal-cell { grid-column: span 6; }
+    .sport-cell { grid-column: span 3; grid-row: span 5; }
+    .quote-cell, .ben-cell, .sub-cell, .voz-cell, .locker-cell { grid-column: span 3; }
+    .reps-row-grid { grid-template-columns: 1fr; }
+    .footer-row { grid-template-columns: 1fr 1fr; }
+    .nav-menu { display: none; }
+  }
+  @media (max-width: 600px) {
+    .bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .cell { min-height: 220px; }
+    .hero-cell, .stat-cell, .cal-cell, .sport-cell, .quote-cell, .ben-cell, .sub-cell, .voz-cell, .locker-cell, .reps-cell, .marquee-cell, .cta-cell, .footer-cell { grid-column: span 1; grid-row: auto; }
+    .reps-row-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">
+    <img src="assets/logo.jpg" alt="CEU UdeSA Avanza" />
+    <div class="logo-name">Avanza<small>Centro de Estudiantes</small></div>
+  </a>
+  <ul class="nav-menu">
+    <li><a href="#programs">Propuestas</a></li>
+    <li><a href="#calendar">Calendario</a></li>
+    <li><a href="#benefits">Beneficios</a></li>
+    <li><a href="#reps">Equipo</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Suscribirme</a>
+</nav>
+
+<div class="container">
+  <div class="bento">
+
+    <!-- HERO -->
+    <div class="cell hero-cell" data-tilt id="programs">
+      <video class="hero-vid" src="assets/ingresantes-2026.mp4" autoplay muted loop playsinline></video>
+      <div class="pill"><span class="dot"></span> Centro de Estudiantes Universitarios — UDESA</div>
+      <h1>Un espacio para <em>mejorar</em> tu experiencia universitaria.</h1>
+      <p class="desc">UdeSA Avanza está formado por estudiantes que trabajan para representar tu voz, escuchar tus necesidades y transformar las ideas en propuestas concretas.</p>
+      <div class="ctas">
+        <a href="#calendar" class="btn primary">Ver propuestas →</a>
+        <a href="#benefits" class="btn ghost">Beneficios CEU</a>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="cell stat-cell" data-tilt>
+      <div class="lbl">★ Propuestas activas</div>
+      <div class="val">8</div>
+      <div class="det">ejes de trabajo del CEU</div>
+      <div class="icon-mini">●</div>
+    </div>
+    <div class="cell stat-cell" data-tilt>
+      <div class="lbl">⚐ Beneficios</div>
+      <div class="val">8</div>
+      <div class="det">marcas con descuento vigente</div>
+      <div class="icon-mini">%</div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="cell cal-cell" data-tilt id="calendar">
+      <div class="cell-head">
+        <div class="ttl">Próximas instancias</div>
+        <div class="meta">MAY · 2026</div>
+      </div>
+      <div class="next-event">
+        <div class="head">
+          <div>
+            <div class="date-x">02</div>
+            <div class="month-x">Mayo · 18:30</div>
+          </div>
+          <div class="badge">PRÓXIMO</div>
+        </div>
+        <h4>Asamblea abierta · Propuestas y diálogo</h4>
+        <p>Canal abierto para transformar ideas en acciones concretas. Edificio Hirsh.</p>
+      </div>
+      <div class="event-row">
+        <div class="dt"><div class="dn">14</div><div class="dm">May</div></div>
+        <div class="info"><h5>Votación · Materia Agronegocios</h5><p>Online · 24h · Comunidad UDESA</p></div>
+      </div>
+      <div class="event-row">
+        <div class="dt"><div class="dn">21</div><div class="dm">May</div></div>
+        <div class="info"><h5>Reserva de Lockers · Edificio Hirsh</h5><p>$25.000 por semestre</p></div>
+      </div>
+      <div class="event-row">
+        <div class="dt"><div class="dn">06</div><div class="dm">Jun</div></div>
+        <div class="info"><h5>Encuentro deportivo · Comunidad UdeSA</h5><p>Cancha Norte · 16:00</p></div>
+      </div>
+    </div>
+
+    <!-- Sport image -->
+    <div class="cell sport-cell" data-tilt>
+      <div class="sport-img"></div>
+      <div class="sport-overlay">
+        <div class="sport-pill">⚐ Vida deportiva</div>
+        <div class="sport-bottom">
+          <h3>Fortalecimiento del deporte</h3>
+          <p>Nuevas disciplinas, instalaciones adecuadas y participación.</p>
+          <div class="sport-tags">
+            <span>Patagonian Ski −15%</span><span>Más disciplinas</span><span>Próximamente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- More stats -->
+    <div class="cell stat-cell" data-tilt>
+      <div class="lbl">⌒ Fundación UDESA</div>
+      <div class="val">'88</div>
+      <div class="det">desde Victoria, Buenos Aires</div>
+      <div class="icon-mini">⌖</div>
+    </div>
+    <div class="cell stat-cell" data-tilt>
+      <div class="lbl">▣ Locker Hirsh</div>
+      <div class="val">$25k</div>
+      <div class="det">reserva semestral CEU</div>
+      <div class="icon-mini">⎘</div>
+    </div>
+
+    <!-- QUOTE / Mission -->
+    <div class="cell quote-cell" data-tilt>
+      <div class="mark">"</div>
+      <p>Construir un Centro de Estudiantes que esté <em>verdaderamente al servicio</em> de la comunidad universitaria, promoviendo el diálogo, la participación y resultados concretos.</p>
+      <div class="src">— Misión UdeSA Avanza · CEU 2026</div>
+    </div>
+
+    <!-- Beneficios -->
+    <div class="cell ben-cell" data-tilt id="benefits">
+      <div class="head">
+        <div>
+          <h3>Beneficios CEU</h3>
+          <div style="font-size: 13px; color: var(--fg-2); margin-top: 4px;">Tu credencial, tu pase</div>
+        </div>
+        <div class="pct">8</div>
+      </div>
+      <div class="ben-list">
+        <div class="ben-item"><div><div class="cat">Académicos</div><div class="name">Tuni · clases particulares</div></div><div class="disc">−10%</div></div>
+        <div class="ben-item"><div><div class="cat">Académicos</div><div class="name">AACI – Inglés</div></div><div class="disc">−25%</div></div>
+        <div class="ben-item"><div><div class="cat">Tecnología</div><div class="name">Sony · electro y audio</div></div><div class="disc">5–10%</div></div>
+        <div class="ben-item"><div><div class="cat">Compras</div><div class="name">Natura · web y app</div></div><div class="disc">30–35%</div></div>
+        <div class="ben-item"><div><div class="cat">Compras</div><div class="name">Bowen · 6 cuotas s/i</div></div><div class="disc">−20%</div></div>
+        <div class="ben-item"><div><div class="cat">Deportes</div><div class="name">Patagonian Ski</div></div><div class="disc">−15%</div></div>
+      </div>
+    </div>
+
+    <!-- Suscripción form -->
+    <div class="cell sub-cell" data-tilt>
+      <div>
+        <div class="cell-head" style="margin-bottom:12px"><div class="ttl">Suscripción CEU</div></div>
+        <h3>Recibí novedades, beneficios y anuncios.</h3>
+        <p>Suscribite con tu mail universitario y enterate de cada actividad antes que nadie.</p>
+      </div>
+      <form class="sub-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='✓ Listo';">
+        <input type="email" placeholder="tu@udesa.edu.ar" required>
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+
+    <!-- Voz / propuestas -->
+    <div class="cell voz-cell" data-tilt id="voz">
+      <div>
+        <div class="cell-head" style="margin-bottom:12px"><div class="ttl">Tu voz</div></div>
+        <h3>Tu voz <em>importa</em>. Escribinos.</h3>
+        <p style="color: rgba(244,241,234,0.85); font-size:13px; margin-top:8px; line-height:1.5;">¿Tenés una propuesta o una queja? Tenemos un canal abierto y permanente para escucharte.</p>
+      </div>
+      <div class="voz-stats">
+        <div class="voz-stat"><div class="v">8</div><div class="l">Propuestas</div></div>
+        <div class="voz-stat"><div class="v">100%</div><div class="l">Abierto</div></div>
+        <div class="voz-stat"><div class="v">CEU</div><div class="l">UdeSA</div></div>
+      </div>
+    </div>
+
+    <!-- REPS -->
+    <div class="cell reps-cell" data-tilt id="reps">
+      <div class="cell-head">
+        <div class="ttl">Mesa Ejecutiva 2026</div>
+        <div class="meta">CEU · UDESA</div>
+      </div>
+      <div class="reps-row-grid">
+        <div class="rep-mini">
+          <div class="av">MB</div>
+          <h5>Máximo Basualdo Cibils</h5>
+          <div class="role">Presidente</div>
+          <div class="dept">Mesa Ejecutiva CEU</div>
+        </div>
+        <div class="rep-mini">
+          <div class="av">BS</div>
+          <h5>Benjamín Steed</h5>
+          <div class="role">Vicepresidente</div>
+          <div class="dept">Mesa Ejecutiva CEU</div>
+        </div>
+        <div class="rep-mini">
+          <div class="av">TM</div>
+          <h5>Tomás Massuh</h5>
+          <div class="role">Tesorero</div>
+          <div class="dept">Mesa Ejecutiva CEU</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Locker -->
+    <div class="cell locker-cell" data-tilt>
+      <div class="lc-content">
+        <div class="ttl">Servicio CEU</div>
+        <div>
+          <h4>¡Obtené tu Locker!</h4>
+          <p style="color: var(--fg-2); font-size: 13px; margin-top: 8px; line-height: 1.5;">Edificio Hirsh · guardá tus cosas en la facultad de forma segura y práctica.</p>
+        </div>
+        <div class="price">$25.000<small>por semestre</small></div>
+      </div>
+    </div>
+
+    <!-- Marquee -->
+    <div class="cell marquee-cell">
+      <div class="marquee-track">
+        <span>UDESA AVANZA</span>
+        <span>QUAERERE VERUM</span>
+        <span>VICTORIA · 1988</span>
+        <span>CENTRO DE ESTUDIANTES UNIVERSITARIOS</span>
+        <span>UDESA AVANZA</span>
+        <span>QUAERERE VERUM</span>
+        <span>VICTORIA · 1988</span>
+        <span>CENTRO DE ESTUDIANTES UNIVERSITARIOS</span>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cell cta-cell" data-tilt id="cta">
+      <h2>Hacé que el próximo cuatrimestre <em>pase</em>.</h2>
+      <p>Sumate a UdeSA Avanza. Seguinos en Instagram para enterarte de cada propuesta, asamblea y nuevo beneficio.</p>
+      <a href="https://instagram.com/udesavanza_ceu" target="_blank" class="cta-btn">→ Seguinos @udesavanza_ceu</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="cell footer-cell">
+      <div class="footer-row">
+        <div class="brand">
+          <a class="logo" href="/"><img src="assets/logo.jpg" alt="CEU UdeSA Avanza" style="height:36px; border-radius:6px;"><div class="logo-name">Avanza<small>Centro de Estudiantes</small></div></a>
+          <p>Centro de Estudiantes Universitarios — CEU. Universidad de San Andrés. Vito Dumas 284, Victoria, Buenos Aires.</p>
+          <a href="https://www.udesa.edu.ar" target="_blank" style="display:inline-block; margin-top:18px; padding:10px 14px; background:rgba(244,241,234,0.04); border:1px solid var(--line); border-radius:8px;">
+            <img src="assets/udesa-logo.jpg" alt="Universidad de San Andrés" style="height:36px; width:auto; display:block; mix-blend-mode: screen; filter: brightness(1.1);" />
+          </a>
+        </div>
+        <div>
+          <h5>El Centro</h5>
+          <ul><li><a href="#">¿Quiénes somos?</a></li><li><a href="#reps">Mesa Ejecutiva</a></li><li><a href="#programs">Propuestas</a></li></ul>
+        </div>
+        <div>
+          <h5>Comunidad</h5>
+          <ul><li><a href="#benefits">Beneficios</a></li><li><a href="#calendar">Calendario</a></li><li><a href="#">Lockers Hirsh</a></li></ul>
+        </div>
+        <div>
+          <h5>Voz</h5>
+          <ul><li><a href="#voz">Buzón propuestas</a></li><li><a href="#">Materia Agronegocios</a></li><li><a href="#">Asambleas</a></li></ul>
+        </div>
+        <div>
+          <h5>Conectá</h5>
+          <ul><li><a href="https://instagram.com/udesavanza_ceu">Instagram</a></li><li><a href="https://www.udesa.edu.ar">UDESA</a></li><li><a href="#cta">Suscripción</a></li></ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 UdeSA Avanza · Todos los derechos reservados</span>
+        <span>Quaerere Verum · Victoria</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const tiltEls = document.querySelectorAll('[data-tilt]');
+  tiltEls.forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      const rx = (y - 0.5) * -6;
+      const ry = (x - 0.5) * 6;
+      el.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+    });
+  });
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = 1;
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.cell').forEach((el, i) => {
+    el.style.opacity = 0;
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = `opacity .8s cubic-bezier(.2,.8,.2,1) ${i*40}ms, transform .8s cubic-bezier(.2,.8,.2,1) ${i*40}ms`;
+    io.observe(el);
+  });
+</script>
+</body>
+</html>

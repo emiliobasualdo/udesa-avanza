@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UdeSA Avanza · Inmersivo</title>
+<link rel="icon" href="assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #061425;
+    --bg-2: #0c1f33;
+    --fg: #f4f1ea;
+    --fg-2: rgba(244,241,234,0.7);
+    --fg-3: rgba(244,241,234,0.42);
+    --line: rgba(244,241,234,0.1);
+    --blue: #00529B;
+    --blue-light: #4a86d0;
+    --green: #2DA343;
+    --pink: #C183B9;
+    --gold: #ffce5c;
+    --deep: #122535;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--fg); font-family: 'Work Sans', sans-serif; overflow-x: hidden; }
+  ::selection { background: var(--blue); color: var(--fg); }
+  a { color: inherit; text-decoration: none; }
+
+  #scene {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  }
+
+  .cursor-dot {
+    position: fixed; width: 6px; height: 6px; background: var(--blue-light); border-radius: 50%;
+    pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+    transition: width .25s, height .25s, background .25s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px; border: 1px solid rgba(74,134,208,0.55);
+    border-radius: 50%; pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%); transition: width .35s, height .35s, opacity .35s;
+  }
+  .cursor-ring.large { width: 80px; height: 80px; border-color: rgba(74,134,208,0.3); }
+
+  .content { position: relative; z-index: 2; }
+
+  nav {
+    position: fixed; top: 24px; left: 24px; right: 24px; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 22px; border-radius: 100px;
+    background: rgba(6,20,37,0.65); backdrop-filter: blur(20px);
+    border: 1px solid var(--line);
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo img { height: 36px; width: auto; border-radius: 6px; }
+  .logo-name { font-family: 'Amiri', serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .logo-name small { display: block; font-family: 'Work Sans', sans-serif; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; margin-top: 1px; }
+
+  .nav-menu { display: flex; gap: 4px; list-style: none; }
+  .nav-menu a {
+    padding: 8px 14px; border-radius: 100px; font-size: 12px;
+    color: var(--fg-2); transition: all .25s; letter-spacing: 0.05em; font-weight: 500;
+  }
+  .nav-menu a:hover { color: var(--blue-light); background: rgba(74,134,208,0.08); }
+  .nav-cta {
+    padding: 10px 18px; border-radius: 100px; font-size: 12px; letter-spacing: 0.04em;
+    background: var(--green); color: var(--fg); font-weight: 600;
+    transition: all .25s;
+  }
+  .nav-cta:hover { box-shadow: 0 0 30px rgba(45,163,67,0.5); }
+
+  .hero {
+    min-height: 100vh; padding: 140px 32px 80px; display: flex;
+    flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    position: relative;
+  }
+  /* Floating video orbs in hero */
+  .hero-orb {
+    position: absolute; border-radius: 50%; overflow: hidden;
+    border: 1px solid rgba(74,134,208,0.35);
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.6), 0 0 60px rgba(0,82,155,0.25) inset;
+    pointer-events: none; backdrop-filter: blur(2px);
+  }
+  .hero-orb video, .hero-orb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hero-orb::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 30%, transparent 30%, rgba(6,20,37,0.55) 100%);
+  }
+  .hero-orb.o1 { width: 280px; height: 280px; left: 6%; top: 18%; animation: orbFloat1 14s ease-in-out infinite; }
+  .hero-orb.o2 { width: 200px; height: 200px; right: 8%; top: 22%; animation: orbFloat2 18s ease-in-out infinite; }
+  .hero-orb.o3 { width: 160px; height: 160px; right: 14%; bottom: 16%; animation: orbFloat3 16s ease-in-out infinite; }
+  .hero-orb.o4 { width: 120px; height: 120px; left: 12%; bottom: 18%; animation: orbFloat4 20s ease-in-out infinite; }
+  @keyframes orbFloat1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(20px,-20px); } }
+  @keyframes orbFloat2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-25px,25px); } }
+  @keyframes orbFloat3 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(15px,-30px); } }
+  @keyframes orbFloat4 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-15px,15px); } }
+  .hero-orb-label {
+    position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
+    font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--blue-light);
+    font-weight: 600; white-space: nowrap;
+  }
+  .hero-meta {
+    display: flex; gap: 8px; padding: 6px 14px;
+    border-radius: 100px; font-size: 11px; letter-spacing: 0.1em;
+    background: rgba(74,134,208,0.1); border: 1px solid rgba(74,134,208,0.25);
+    color: var(--blue-light); margin-bottom: 32px; font-weight: 500;
+  }
+  .hero-meta::before { content: '◉'; animation: blink 1.5s infinite; }
+  @keyframes blink { 50% { opacity: .3; } }
+  .hero-title {
+    font-family: 'Amiri', serif;
+    font-size: clamp(56px, 9vw, 144px); line-height: 0.96; letter-spacing: -0.025em;
+    max-width: 1300px;
+  }
+  .hero-title .block { display: block; }
+  .hero-title em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--blue-light) 0%, var(--pink) 50%, var(--gold) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero-desc {
+    margin-top: 32px; font-size: 19px; color: var(--fg-2); line-height: 1.6;
+    max-width: 600px;
+  }
+  .hero-cta { margin-top: 48px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    padding: 18px 32px; border-radius: 100px; font-size: 14px;
+    font-weight: 600; letter-spacing: 0.02em;
+    transition: all .3s; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .btn-primary { background: var(--fg); color: var(--bg); }
+  .btn-primary:hover { transform: scale(1.04); box-shadow: 0 0 40px rgba(244,241,234,0.4); }
+  .btn-ghost { background: rgba(255,255,255,0.04); border: 1px solid var(--line); color: var(--fg); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+
+  .coord-strip {
+    position: absolute; bottom: 40px; left: 0; right: 0;
+    display: flex; justify-content: space-between; padding: 0 32px;
+    font-size: 11px; color: var(--fg-3); letter-spacing: 0.1em;
+  }
+  .coord-strip span::before { content: '◌ '; color: var(--blue-light); }
+
+  section { padding: 140px 32px; max-width: 1500px; margin: 0 auto; position: relative; }
+  .section-head { display: flex; align-items: end; justify-content: space-between; margin-bottom: 80px; gap: 40px; flex-wrap: wrap; }
+  .section-eyebrow {
+    font-size: 12px; color: var(--blue-light); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px; letter-spacing: 0.1em; font-weight: 500;
+  }
+  .section-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--blue-light); }
+  .section-title {
+    font-family: 'Amiri', serif;
+    font-size: clamp(44px, 7vw, 104px); line-height: 1.0; letter-spacing: -0.025em;
+    max-width: 1100px;
+  }
+  .section-title em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--blue-light), var(--pink));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .section-meta { font-size: 11px; color: var(--fg-3); text-align: right; letter-spacing: 0.05em; }
+  .section-meta div { margin-bottom: 6px; }
+  .section-meta strong { color: var(--fg); }
+
+  /* Programs - 8 propuestas as constellation */
+  .programs-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 24px; overflow: hidden;
+  }
+  .program {
+    padding: 40px; background: var(--bg); position: relative; overflow: hidden;
+    transition: background .5s; min-height: 280px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .program::before {
+    content: ''; position: absolute; inset: 0; opacity: 0;
+    background-size: cover; background-position: center;
+    transition: opacity .8s; pointer-events: none;
+    filter: brightness(0.45) saturate(0.95);
+  }
+  .program::after {
+    content: ''; position: absolute; inset: 0; opacity: 0;
+    background: linear-gradient(160deg, rgba(0,82,155,0.45) 0%, rgba(193,131,185,0.25) 100%);
+    transition: opacity .5s; pointer-events: none;
+  }
+  .program:hover::before, .program:hover::after { opacity: 1; }
+  .program:nth-child(1)::before { background-image: url('assets/ingresantes-1.jpg'); }
+  .program:nth-child(2)::before { background-image: url('assets/campus-1.jpg'); }
+  .program:nth-child(3)::before { background-image: url('assets/ingresantes-3.jpg'); }
+  .program:nth-child(4)::before { background-image: url('assets/campus-2.jpg'); }
+  .program:nth-child(5)::before { background-image: url('assets/ingresantes-4.jpg'); }
+  .program:nth-child(6)::before { background-image: url('assets/campus-3.jpg'); }
+  .program:nth-child(7)::before { background-image: url('assets/campus-4.jpg'); }
+  .program:nth-child(8)::before { background-image: url('assets/campus-5.jpg'); }
+  .program-num { font-size: 11px; color: var(--fg-3); letter-spacing: 0.15em; font-weight: 600; }
+  .program h3 { font-family: 'Amiri', serif; font-size: 36px; letter-spacing: -0.02em; line-height: 1.05; margin-top: 8px; }
+  .program p { color: var(--fg-2); font-size: 14px; line-height: 1.6; max-width: 460px; margin-top: 12px; }
+  .program .meta-row { display: flex; gap: 24px; font-size: 11px; color: var(--fg-3); margin-top: 24px; letter-spacing: 0.05em; }
+  .program .meta-row strong { color: var(--blue-light); display: block; font-family: 'Amiri', serif; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+
+  .orbit {
+    position: absolute; top: 50%; right: -120px; width: 280px; height: 280px;
+    border: 1px dashed rgba(74,134,208,0.18); border-radius: 50%; transform: translateY(-50%);
+    animation: spin 30s linear infinite;
+  }
+  .orbit::before {
+    content: ''; position: absolute; top: 0; left: 50%; width: 8px; height: 8px;
+    background: var(--blue-light); border-radius: 50%; transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px var(--blue-light);
+  }
+  @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+  /* Campus film strip */
+  .filmstrip-section { padding: 100px 0 140px; max-width: 100%; margin: 0 auto; position: relative; }
+  .filmstrip-head { padding: 0 32px; max-width: 1500px; margin: 0 auto 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; }
+  .filmstrip-head h2 { font-family: 'Amiri', serif; font-size: clamp(36px, 5vw, 80px); line-height: 1; letter-spacing: -0.025em; }
+  .filmstrip-head h2 em { font-style: italic; background: linear-gradient(135deg, var(--blue-light), var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .filmstrip-head p { font-size: 16px; line-height: 1.6; color: var(--fg-2); max-width: 460px; }
+  .filmstrip {
+    display: flex; gap: 16px; padding: 0 32px;
+    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  }
+  .filmstrip::-webkit-scrollbar { display: none; }
+  .frame {
+    flex: 0 0 360px; aspect-ratio: 4/5; position: relative; overflow: hidden;
+    border-radius: 16px; border: 1px solid var(--line); scroll-snap-align: start;
+    transition: transform .5s, border-color .5s;
+  }
+  .frame:hover { transform: translateY(-6px) scale(1.02); border-color: rgba(74,134,208,0.4); }
+  .frame img, .frame video {
+    width: 100%; height: 100%; object-fit: cover; transition: transform 1s;
+  }
+  .frame:hover img, .frame:hover video { transform: scale(1.06); }
+  .frame::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(6,20,37,0.85) 100%);
+    pointer-events: none;
+  }
+  .frame .frame-meta {
+    position: absolute; bottom: 24px; left: 24px; right: 24px; z-index: 1; color: var(--fg);
+  }
+  .frame .frame-meta .lab { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--blue-light); margin-bottom: 6px; font-weight: 600; }
+  .frame .frame-meta h4 { font-family: 'Amiri', serif; font-size: 22px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; }
+  .frame .vid-badge {
+    position: absolute; top: 16px; right: 16px; z-index: 1;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(244,241,234,0.18); backdrop-filter: blur(8px);
+    border: 1px solid rgba(244,241,234,0.3);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--fg);
+  }
+  .frame .vid-badge::before { content: '▶'; font-size: 12px; }
+  .filmstrip-track-info {
+    padding: 0 32px; max-width: 1500px; margin: 32px auto 0;
+    display: flex; justify-content: space-between; font-size: 11px; color: var(--fg-3);
+    letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600;
+  }
+
+  /* Mesa Ejecutiva */
+  .reps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 60px; }
+  .rep-card {
+    padding: 36px 28px; border: 1px solid var(--line); border-radius: 20px;
+    background: linear-gradient(180deg, rgba(74,134,208,0.05), rgba(193,131,185,0.02));
+    text-align: center; cursor: pointer; transition: all .4s;
+    position: relative; overflow: hidden;
+  }
+  .rep-card::before {
+    content: ''; position: absolute; inset: -1px; padding: 1px; border-radius: 20px;
+    background: linear-gradient(135deg, var(--blue-light), transparent 30%, transparent 70%, var(--pink));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity .4s;
+  }
+  .rep-card:hover { transform: translateY(-6px); }
+  .rep-card:hover::before { opacity: 1; }
+  .rep-avatar {
+    width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Amiri', serif; font-size: 30px; font-weight: 700; color: white;
+    background: conic-gradient(from 0deg, var(--blue), var(--green), var(--gold), var(--blue));
+    position: relative;
+  }
+  .rep-avatar::after {
+    content: ''; position: absolute; inset: 4px; border-radius: 50%;
+    background: var(--bg);
+  }
+  .rep-avatar span { position: relative; z-index: 1; background: linear-gradient(135deg, var(--blue-light), var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .rep-card h4 { font-family: 'Amiri', serif; font-size: 22px; letter-spacing: -0.01em; }
+  .rep-card .role { font-size: 14px; color: var(--blue-light); margin-top: 6px; font-weight: 500; }
+  .rep-card .dept { font-size: 11px; color: var(--fg-3); margin-top: 14px; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; }
+
+  /* Calendar timeline */
+  .timeline { position: relative; padding-left: 80px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 24px; top: 0; bottom: 0;
+    width: 1px; background: linear-gradient(180deg, transparent, var(--blue-light) 20%, var(--green) 80%, transparent);
+  }
+  .timeline-item {
+    position: relative; padding: 28px 0; display: grid;
+    grid-template-columns: 200px 1fr 200px; gap: 32px;
+    border-bottom: 1px solid var(--line); cursor: pointer; transition: background .3s, transform .3s;
+  }
+  .timeline-item:hover { background: rgba(74,134,208,0.03); transform: translateX(8px); }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -64px; top: 50%; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--bg); border: 2px solid var(--blue-light);
+    transform: translateY(-50%); transition: all .3s;
+  }
+  .timeline-item:hover::before { background: var(--blue-light); box-shadow: 0 0 20px var(--blue-light); }
+  .timeline-date .d { font-family: 'Amiri', serif; font-size: 36px; line-height: 1; letter-spacing: -0.025em; }
+  .timeline-date .m { font-size: 11px; color: var(--fg-3); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
+  .timeline-content h4 { font-family: 'Amiri', serif; font-size: 24px; letter-spacing: -0.01em; }
+  .timeline-content p { color: var(--fg-2); font-size: 13px; margin-top: 8px; line-height: 1.5; }
+  .timeline-tags { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .timeline-tags span { font-size: 10px; padding: 3px 10px; border-radius: 100px; background: rgba(74,134,208,0.08); color: var(--blue-light); letter-spacing: 0.05em; }
+  .timeline-meta { font-size: 11px; color: var(--fg-3); text-align: right; align-self: center; letter-spacing: 0.05em; }
+
+  /* Stats grid */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 24px; overflow: hidden;
+    margin-top: 60px;
+  }
+  .stat {
+    padding: 48px 32px; background: var(--bg); position: relative;
+    display: flex; flex-direction: column; gap: 12px; transition: background .4s;
+  }
+  .stat:hover { background: rgba(74,134,208,0.03); }
+  .stat .label { font-size: 11px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; }
+  .stat .value {
+    font-family: 'Amiri', serif; font-size: 80px; line-height: 0.9; letter-spacing: -0.04em;
+    background: linear-gradient(180deg, var(--fg) 30%, rgba(244,241,234,0.3) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .stat .desc { color: var(--fg-2); font-size: 13px; line-height: 1.5; }
+
+  /* Beneficios */
+  .ben-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 60px; }
+  .ben {
+    padding: 28px; border: 1px solid var(--line); border-radius: 20px;
+    background: rgba(255,255,255,0.02); transition: all .4s; cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .ben:hover { background: rgba(74,134,208,0.05); border-color: rgba(74,134,208,0.3); transform: translateY(-4px); }
+  .ben::after {
+    content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px;
+    background: radial-gradient(circle, rgba(74,134,208,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .ben-cat { font-size: 11px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
+  .ben-name { font-family: 'Amiri', serif; font-size: 22px; margin-top: 10px; letter-spacing: -0.01em; }
+  .ben-desc { color: var(--fg-2); font-size: 13px; margin-top: 8px; line-height: 1.5; }
+  .ben-tag {
+    margin-top: 16px; display: inline-block; padding: 4px 12px; border-radius: 100px;
+    background: linear-gradient(135deg, var(--blue), var(--green));
+    color: var(--fg); font-size: 12px; font-weight: 700;
+  }
+
+  /* Locker */
+  .locker-card {
+    margin-top: 80px;
+    display: grid; grid-template-columns: 1.2fr 1fr;
+    background: linear-gradient(135deg, rgba(0,82,155,0.4), rgba(193,131,185,0.2));
+    border: 1px solid var(--line); border-radius: 24px; overflow: hidden;
+  }
+  .locker-text { padding: 56px 48px; display: flex; flex-direction: column; justify-content: space-between; }
+  .locker-text .eb { font-size: 11px; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; }
+  .locker-text h3 { font-family: 'Amiri', serif; font-size: 56px; line-height: 1; letter-spacing: -0.025em; margin-top: 16px; }
+  .locker-text p { font-size: 16px; line-height: 1.6; color: var(--fg-2); max-width: 480px; margin-top: 18px; }
+  .locker-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 36px; padding-top: 32px; border-top: 1px solid rgba(244,241,234,0.12); }
+  .locker-meta .v { font-family: 'Amiri', serif; font-size: 28px; line-height: 1; }
+  .locker-meta .l { font-size: 11px; color: var(--fg-3); margin-top: 6px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; }
+  .locker-img { background-image: url('assets/campus-2.jpg'); background-size: cover; background-position: center; }
+
+  /* CTA */
+  .cta {
+    padding: 200px 32px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-bg-video {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: 0.32;
+  }
+  .cta::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: radial-gradient(ellipse at center, rgba(6,20,37,0.5) 0%, var(--bg) 80%);
+  }
+  .cta-line {
+    font-size: 11px; color: var(--blue-light);
+    margin-bottom: 24px; letter-spacing: 0.25em; font-weight: 600;
+  }
+  .cta h2 {
+    font-family: 'Amiri', serif;
+    font-size: clamp(48px, 9vw, 144px); line-height: 0.95;
+    letter-spacing: -0.03em; max-width: 1200px; margin: 0 auto;
+  }
+  .cta h2 em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--blue-light), var(--pink), var(--gold));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .cta-btn { margin-top: 60px; }
+
+  /* Footer */
+  footer {
+    padding: 60px 32px 40px; max-width: 1500px; margin: 60px auto 0; border-top: 1px solid var(--line); position: relative; z-index: 2;
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; }
+  .footer-brand p { color: var(--fg-2); font-size: 13px; line-height: 1.6; max-width: 320px; margin-top: 12px; }
+  .footer-col h5 { font-size: 11px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px; font-weight: 600; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; }
+  .footer-col a { color: var(--fg-2); font-size: 13px; transition: color .3s; }
+  .footer-col a:hover { color: var(--blue-light); }
+  .footer-bottom { display: flex; justify-content: space-between; padding-top: 40px; margin-top: 60px; border-top: 1px solid var(--line); font-size: 11px; color: var(--fg-3); letter-spacing: 0.05em; }
+
+  @media (max-width: 1100px) {
+    .hero-orb.o1 { width: 200px; height: 200px; left: 2%; top: 12%; }
+    .hero-orb.o2 { width: 140px; height: 140px; right: 4%; top: 16%; }
+    .hero-orb.o3 { width: 110px; height: 110px; right: 8%; bottom: 12%; }
+    .hero-orb.o4 { width: 90px; height: 90px; left: 6%; bottom: 14%; }
+    .frame { flex: 0 0 280px; }
+  }
+  @media (max-width: 900px) {
+    body { cursor: auto; }
+    .cursor-dot, .cursor-ring { display: none; }
+    nav { top: 12px; left: 12px; right: 12px; padding: 10px 16px; }
+    .nav-menu { display: none; }
+    .hero-orb { display: none; }
+    .filmstrip-head { grid-template-columns: 1fr; }
+    .programs-grid, .stats-grid, .reps-grid, .ben-grid { grid-template-columns: 1fr; }
+    .timeline { padding-left: 40px; }
+    .timeline-item { grid-template-columns: 1fr; gap: 8px; }
+    .timeline-meta { text-align: left; }
+    .timeline-item::before { left: -24px; }
+    .timeline::before { left: 0; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .section-head { flex-direction: column; align-items: start; gap: 24px; }
+    .section-meta { text-align: left; }
+    .locker-card { grid-template-columns: 1fr; }
+    .locker-img { min-height: 240px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="scene"></canvas>
+<div class="cursor-dot" id="dot"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav>
+  <a class="logo" href="/">
+    <img src="assets/logo.jpg" alt="CEU UdeSA Avanza" />
+    <div class="logo-name">Avanza<small>Centro de Estudiantes</small></div>
+  </a>
+  <ul class="nav-menu">
+    <li><a href="#programs">PROPUESTAS</a></li>
+    <li><a href="#calendar">CALENDARIO</a></li>
+    <li><a href="#reps">EQUIPO</a></li>
+    <li><a href="#benefits">BENEFICIOS</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta" data-cursor="large">SUSCRIBIRME →</a>
+</nav>
+
+<div class="content">
+
+<section class="hero">
+  <div class="hero-orb o1">
+    <video src="assets/udesa-volvemos.mp4" autoplay muted loop playsinline></video>
+    <div class="hero-orb-label">CAMPUS · LIVE</div>
+  </div>
+  <div class="hero-orb o2">
+    <img src="assets/campus-1.jpg" alt="Campus Victoria">
+    <div class="hero-orb-label">VICTORIA</div>
+  </div>
+  <div class="hero-orb o3">
+    <video src="assets/ingresantes-2026-2.mp4" autoplay muted loop playsinline></video>
+    <div class="hero-orb-label">INGRESANTES '26</div>
+  </div>
+  <div class="hero-orb o4">
+    <img src="assets/ingresantes-2.jpg" alt="Ingresantes 2026">
+    <div class="hero-orb-label">COMUNIDAD</div>
+  </div>
+  <div class="hero-meta">CEU EN VIVO · CICLO 2026 · VICTORIA, BUENOS AIRES</div>
+  <h1 class="hero-title"><span class="block">Estudiantes que</span><span class="block">trabajan para</span><span class="block"><em>mejorar la facultad</em>.</span></h1>
+  <p class="hero-desc">UdeSA Avanza es el Centro de Estudiantes Universitarios de UDESA. Representamos tu voz, escuchamos necesidades y transformamos las ideas en propuestas concretas.</p>
+  <div class="hero-cta">
+    <a href="#programs" class="btn btn-primary" data-cursor="large">▶ VER LAS 8 PROPUESTAS</a>
+    <a href="#calendar" class="btn btn-ghost">CALENDARIO 2026</a>
+  </div>
+  <div class="coord-strip">
+    <span>VICTORIA · BUENOS AIRES</span>
+    <span>UTC −03:00 · ARGENTINA</span>
+    <span>QUAERERE VERUM · 1988</span>
+  </div>
+</section>
+
+<section id="programs">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow">PROPUESTAS_CEU</div>
+      <h2 class="section-title">Ocho ejes <em>concretos</em>.</h2>
+    </div>
+    <div class="section-meta">
+      <div><strong>Activos:</strong> 8 / 8</div>
+      <div>Última actualización: HOY</div>
+    </div>
+  </div>
+  <div class="programs-grid">
+    <div class="program" data-cursor="large">
+      <div>
+        <div class="program-num">EJE 01 · DIÁLOGO</div>
+        <h3>Escuchar y actuar con compromiso</h3>
+        <p>Un canal abierto y permanente con los estudiantes para conocer sus necesidades, propuestas y preocupaciones.</p>
+      </div>
+      <div class="meta-row"><div><strong>24/7</strong>canal abierto</div></div>
+      <div class="orbit"></div>
+    </div>
+    <div class="program" data-cursor="large">
+      <div>
+        <div class="program-num">EJE 02 · CONECTIVIDAD</div>
+        <h3>Mejora del WiFi en el campus</h3>
+        <p>Optimizamos el funcionamiento del WiFi sin afectar el rendimiento académico ni la seguridad digital.</p>
+      </div>
+      <div class="meta-row"><div><strong>+</strong>velocidad y estabilidad</div></div>
+      <div class="orbit"></div>
+    </div>
+    <div class="program" data-cursor="large">
+      <div>
+        <div class="program-num">EJE 03 · VOZ</div>
+        <h3>Participación estudiantil</h3>
+        <p>Más canales de comunicación directa con la comunidad para que cada propuesta llegue al lugar correcto.</p>
+      </div>
+      <div class="meta-row"><div><strong>+canales</strong>de comunicación</div></div>
+      <div class="orbit"></div>
+    </div>
+    <div class="program" data-cursor="large">
+      <div>
+        <div class="program-num">EJE 04 · CAMPUS</div>
+        <h3>Sistema de estacionamiento</h3>
+        <p>Modernizar el ingreso y egreso vehicular del campus, agilizando la circulación diaria.</p>
+      </div>
+      <div class="meta-row"><div><strong>−tiempos</strong>de ingreso</div></div>
+      <div class="orbit"></div>
+    </div>
+    <div class="program" data-cursor="large">
+      <div>
+        <div class="program-num">EJE 05 · DEPORTE</div>
+        <h3>Vida deportiva</h3>
+        <p>Promovemos nuevas disciplinas y el fortalecimiento de las existentes, incentivando la participación.</p>
+      </div>
+      <div class="meta-row"><div><strong>+disciplinas</strong>e instalaciones</div></div>
+      <div class="orbit"></div>
+    </div>
+    <div class="program" data-cursor="large">
+      <div>
+        <div class="program-num">EJE 06 · BENEFICIOS</div>
+        <h3>Convenios y descuentos</h3>
+        <p>Acuerdos con instituciones y empresas para ofrecer beneficios exclusivos y oportunidades.</p>
+      </div>
+      <div class="meta-row"><div><strong>8</strong>beneficios vigentes</div></div>
+      <div class="orbit"></div>
+    </div>
+    <div class="program" data-cursor="large">
+      <div>
+        <div class="program-num">EJE 07 · ESTUDIO</div>
+        <h3>Espacios de estudio</h3>
+        <p>Más aulas y ambientes para el trabajo académico, individual y grupal, dentro del campus.</p>
+      </div>
+      <div class="meta-row"><div><strong>+aulas</strong>y horarios</div></div>
+      <div class="orbit"></div>
+    </div>
+    <div class="program" data-cursor="large">
+      <div>
+        <div class="program-num">EJE 08 · GASTRONOMÍA</div>
+        <h3>Más opciones, más sanas</h3>
+        <p>Ampliar y mejorar la oferta gastronómica del campus, incorporando alternativas diversas y saludables.</p>
+      </div>
+      <div class="meta-row"><div><strong>+variedad</strong>en el campus</div></div>
+      <div class="orbit"></div>
+    </div>
+  </div>
+</section>
+
+<section class="filmstrip-section">
+  <div class="filmstrip-head">
+    <div>
+      <div class="section-eyebrow" style="font-size: 12px; color: var(--blue-light); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; letter-spacing: 0.1em; font-weight: 500;">CAMPUS_LIVE</div>
+      <h2>Postales del <em>campus de Victoria</em>.</h2>
+    </div>
+    <p>Imágenes oficiales del campus de UDESA. Arquitectura de vanguardia, aulas que inspiran y la comunidad que hace posible cada propuesta del CEU.</p>
+  </div>
+  <div class="filmstrip" id="filmstrip">
+    <div class="frame">
+      <video src="assets/udesa-volvemos.mp4" autoplay muted loop playsinline></video>
+      <div class="vid-badge"></div>
+      <div class="frame-meta"><div class="lab">VIDEO · BIENVENIDA</div><h4>UdeSA ya está lista para recibirte</h4></div>
+    </div>
+    <div class="frame">
+      <img src="assets/campus-1.jpg" alt="Campus Victoria">
+      <div class="frame-meta"><div class="lab">CAMPUS · 01</div><h4>Arquitectura de vanguardia</h4></div>
+    </div>
+    <div class="frame">
+      <img src="assets/campus-2.jpg" alt="Aulas">
+      <div class="frame-meta"><div class="lab">CAMPUS · 02</div><h4>Aulas que inspiran</h4></div>
+    </div>
+    <div class="frame">
+      <video src="assets/ingresantes-2026.mp4" autoplay muted loop playsinline></video>
+      <div class="vid-badge"></div>
+      <div class="frame-meta"><div class="lab">VIDEO · INGRESO</div><h4>Primer día, primeros pasos</h4></div>
+    </div>
+    <div class="frame">
+      <img src="assets/ingresantes-1.jpg" alt="Ingresantes 2026">
+      <div class="frame-meta"><div class="lab">COMUNIDAD · 01</div><h4>Ingresantes 2026</h4></div>
+    </div>
+    <div class="frame">
+      <img src="assets/campus-3.jpg" alt="Campus">
+      <div class="frame-meta"><div class="lab">CAMPUS · 03</div><h4>Patios y verde</h4></div>
+    </div>
+    <div class="frame">
+      <video src="assets/ingresantes-2026-2.mp4" autoplay muted loop playsinline></video>
+      <div class="vid-badge"></div>
+      <div class="frame-meta"><div class="lab">VIDEO · 2026</div><h4>El comienzo del camino</h4></div>
+    </div>
+    <div class="frame">
+      <img src="assets/ingresantes-3.jpg" alt="Comunidad">
+      <div class="frame-meta"><div class="lab">COMUNIDAD · 02</div><h4>Diálogo abierto</h4></div>
+    </div>
+    <div class="frame">
+      <img src="assets/campus-4.jpg" alt="Campus">
+      <div class="frame-meta"><div class="lab">CAMPUS · 04</div><h4>5 razones únicas</h4></div>
+    </div>
+    <div class="frame">
+      <img src="assets/ingresantes-5.jpg" alt="Comunidad">
+      <div class="frame-meta"><div class="lab">COMUNIDAD · 03</div><h4>Encuentros del CEU</h4></div>
+    </div>
+    <div class="frame">
+      <img src="assets/campus-5.jpg" alt="Campus">
+      <div class="frame-meta"><div class="lab">CAMPUS · 05</div><h4>Quaerere Verum</h4></div>
+    </div>
+  </div>
+  <div class="filmstrip-track-info">
+    <span>← ARRASTRÁ PARA EXPLORAR</span>
+    <span>11 IMÁGENES + 3 VIDEOS</span>
+    <span>UDESA · CAMPUS VICTORIA</span>
+  </div>
+</section>
+
+<section id="reps">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow">MESA_EJECUTIVA</div>
+      <h2 class="section-title">Las personas que <em>llevan tu voz</em>.</h2>
+    </div>
+    <div class="section-meta">
+      <div><strong>CEU 2026</strong></div>
+      <div>Centro de Estudiantes UDESA</div>
+    </div>
+  </div>
+  <div class="reps-grid">
+    <div class="rep-card" data-cursor="large">
+      <div class="rep-avatar"><span>MB</span></div>
+      <h4>Máximo Basualdo Cibils</h4>
+      <div class="role">Presidente</div>
+      <div class="dept">Mesa Ejecutiva CEU</div>
+    </div>
+    <div class="rep-card" data-cursor="large">
+      <div class="rep-avatar"><span>BS</span></div>
+      <h4>Benjamín Steed</h4>
+      <div class="role">Vicepresidente</div>
+      <div class="dept">Mesa Ejecutiva CEU</div>
+    </div>
+    <div class="rep-card" data-cursor="large">
+      <div class="rep-avatar"><span>TM</span></div>
+      <h4>Tomás Massuh</h4>
+      <div class="role">Tesorero</div>
+      <div class="dept">Mesa Ejecutiva CEU</div>
+    </div>
+  </div>
+</section>
+
+<section id="calendar">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow">SECUENCIA_TEMPORAL</div>
+      <h2 class="section-title">Lo que <em>se viene</em>.</h2>
+    </div>
+    <div class="section-meta">
+      <div><strong>Q2 · 2026</strong></div>
+      <div>Actualización en tiempo real</div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item" data-cursor="large">
+      <div class="timeline-date"><div class="d">02</div><div class="m">MAY 2026</div></div>
+      <div class="timeline-content">
+        <h4>Asamblea abierta · Propuestas y diálogo</h4>
+        <p>Mesa abierta para escuchar a la comunidad. Canal abierto para transformar ideas en acciones.</p>
+        <div class="timeline-tags"><span>diálogo</span><span>todos los estudiantes</span><span>edificio Hirsh</span></div>
+      </div>
+      <div class="timeline-meta">18:30 ARS<br>→ Edificio Hirsh</div>
+    </div>
+    <div class="timeline-item" data-cursor="large">
+      <div class="timeline-date"><div class="d">14</div><div class="m">MAY 2026</div></div>
+      <div class="timeline-content">
+        <h4>Votación · Materia optativa Agronegocios</h4>
+        <p>El CEU evalúa incorporar Agronegocios como materia optativa. Tu opinión es muy importante.</p>
+        <div class="timeline-tags"><span>votación</span><span>online</span><span>comunidad UDESA</span></div>
+      </div>
+      <div class="timeline-meta">24h online<br>→ Comunidad UDESA</div>
+    </div>
+    <div class="timeline-item" data-cursor="large">
+      <div class="timeline-date"><div class="d">21</div><div class="m">MAY 2026</div></div>
+      <div class="timeline-content">
+        <h4>Reserva de Lockers · Apertura segundo cuatrimestre</h4>
+        <p>El CEU gestiona lockers en el Edificio Hirsh. Mandanos un mail con tu nombre, carrera y celular.</p>
+        <div class="timeline-tags"><span>servicio CEU</span><span>$25.000 / sem</span><span>edificio Hirsh</span></div>
+      </div>
+      <div class="timeline-meta">Reserva online<br>→ Edificio Hirsh</div>
+    </div>
+    <div class="timeline-item" data-cursor="large">
+      <div class="timeline-date"><div class="d">06</div><div class="m">JUN 2026</div></div>
+      <div class="timeline-content">
+        <h4>Encuentro deportivo · Comunidad UdeSA</h4>
+        <p>Promovemos el desarrollo de nuevas disciplinas deportivas y el acceso a instalaciones adecuadas.</p>
+        <div class="timeline-tags"><span>deporte</span><span>tribunas abiertas</span><span>cancha norte</span></div>
+      </div>
+      <div class="timeline-meta">16:00 ARS<br>→ Cancha Norte</div>
+    </div>
+    <div class="timeline-item" data-cursor="large">
+      <div class="timeline-date"><div class="d">22</div><div class="m">JUN 2026</div></div>
+      <div class="timeline-content">
+        <h4>Clínica con Patagonian Ski · 15% para la comunidad</h4>
+        <p>Beneficio activo del CEU. 15% de descuento en clases para toda la comunidad UDESA.</p>
+        <div class="timeline-tags"><span>beneficio</span><span>−15%</span><span>Patagonia</span></div>
+      </div>
+      <div class="timeline-meta">Inscripción CEU<br>→ Patagonian Ski</div>
+    </div>
+  </div>
+</section>
+
+<section id="stats">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow">DATA_PUNTOS</div>
+      <h2 class="section-title">Una constelación <em>medible</em>.</h2>
+    </div>
+    <div class="section-meta">
+      <div><strong>Live · ciclo 2026</strong></div>
+    </div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat"><div class="label">PROPUESTAS ACTIVAS</div><div class="value">8</div><div class="desc">ejes de trabajo del CEU</div></div>
+    <div class="stat"><div class="label">BENEFICIOS VIGENTES</div><div class="value">8</div><div class="desc">marcas con descuento UDESA</div></div>
+    <div class="stat"><div class="label">FUNDACIÓN UDESA</div><div class="value">'88</div><div class="desc">desde Victoria, Buenos Aires</div></div>
+    <div class="stat"><div class="label">LOCKER HIRSH</div><div class="value">$25k</div><div class="desc">por semestre · servicio CEU</div></div>
+  </div>
+</section>
+
+<section id="benefits">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow">RED_DE_BENEFICIOS</div>
+      <h2 class="section-title">Tu credencial, <em>tu acceso</em>.</h2>
+    </div>
+    <div class="section-meta">
+      <div><strong>8 marcas activas</strong></div>
+      <div>Para alumnos, docentes, staff y graduados</div>
+    </div>
+  </div>
+  <div class="ben-grid">
+    <div class="ben"><div class="ben-cat">ACADÉMICOS</div><div class="ben-name">Tuni</div><p class="ben-desc">10% en la primera clase particular. IRM · IPC · Eco I · Análisis Mat. I · Programación I.</p><div class="ben-tag">−10%</div></div>
+    <div class="ben"><div class="ben-cat">ACADÉMICOS</div><div class="ben-name">AACI – Inglés</div><p class="ben-desc">25% en cursos de inglés. Para alumnos, docentes, staff y graduados. Arenales 1913, CABA.</p><div class="ben-tag">−25%</div></div>
+    <div class="ben"><div class="ben-cat">TECNOLOGÍA</div><div class="ben-name">Sony</div><p class="ben-desc">5% en cámaras, lentes Alpha, video, consolas y VR. 10% en TV, audio y gaming.</p><div class="ben-tag">5–10%</div></div>
+    <div class="ben"><div class="ben-cat">TECNOLOGÍA</div><div class="ben-name">Lenovo</div><p class="ben-desc">Descuento exclusivo en la tienda oficial. Registrarse con mail @udesa.edu.ar.</p><div class="ben-tag">EXCL.</div></div>
+    <div class="ben"><div class="ben-cat">COMPRAS</div><div class="ben-name">Natura</div><p class="ben-desc">30% web · 35% + envío gratis desde la app. Solo @udesa.edu.ar, un uso por mes.</p><div class="ben-tag">−35%</div></div>
+    <div class="ben"><div class="ben-cat">COMPRAS</div><div class="ben-name">Bowen</div><p class="ben-desc">20% + 6 cuotas sin interés. Presentar credencial digital + DNI.</p><div class="ben-tag">−20%</div></div>
+    <div class="ben"><div class="ben-cat">COMPRAS</div><div class="ben-name">Avon</div><p class="ben-desc">25% en compras > $25.000 web. 30% + envío gratis app. Solo @udesa.edu.ar.</p><div class="ben-tag">−30%</div></div>
+    <div class="ben"><div class="ben-cat">DEPORTES</div><div class="ben-name">Patagonian Ski</div><p class="ben-desc">15% en clases de ski para toda la comunidad UDESA.</p><div class="ben-tag">−15%</div></div>
+  </div>
+
+  <div class="locker-card">
+    <div class="locker-text">
+      <div>
+        <div class="eb">Servicio CEU</div>
+        <h3>¡Obtené tu Locker!</h3>
+        <p>El Centro de Estudiantes gestiona lockers para que puedas guardar tus cosas en la facultad de forma segura y práctica durante el año académico.</p>
+      </div>
+      <div class="locker-meta">
+        <div><div class="v">Hirsh</div><div class="l">Edificio</div></div>
+        <div><div class="v">$25.000</div><div class="l">por semestre</div></div>
+      </div>
+    </div>
+    <div class="locker-img"></div>
+  </div>
+</section>
+
+<section id="cta" class="cta">
+  <video class="cta-bg-video" src="assets/ingresantes-2026.mp4" autoplay muted loop playsinline></video>
+  <div class="cta-line">▶ SUMATE A LA COMUNIDAD CEU</div>
+  <h2>No mires <em>desde afuera</em>. Sumá tu voz.</h2>
+  <a href="https://instagram.com/udesavanza_ceu" target="_blank" class="btn btn-primary cta-btn" data-cursor="large">→ SEGUINOS @UDESAVANZA_CEU</a>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="/">
+        <img src="assets/logo.jpg" alt="CEU UdeSA Avanza" />
+        <div class="logo-name">Avanza<small>Centro de Estudiantes</small></div>
+      </a>
+      <p>Centro de Estudiantes Universitarios — CEU. Universidad de San Andrés. Vito Dumas 284, Victoria, Buenos Aires.</p>
+      <a href="https://www.udesa.edu.ar" target="_blank" style="display:inline-block; margin-top:18px; padding:10px 14px; background:rgba(244,241,234,0.04); border:1px solid var(--line); border-radius:8px;">
+        <img src="assets/udesa-logo.jpg" alt="Universidad de San Andrés" style="height:38px; width:auto; display:block; mix-blend-mode: screen; filter: brightness(1.1);" />
+      </a>
+    </div>
+    <div class="footer-col">
+      <h5>EL CENTRO</h5>
+      <ul><li><a href="#programs">8 Propuestas</a></li><li><a href="#reps">Mesa Ejecutiva</a></li><li><a href="#">Estatuto</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h5>COMUNIDAD</h5>
+      <ul><li><a href="#calendar">Calendario</a></li><li><a href="#benefits">Beneficios</a></li><li><a href="#">Lockers Hirsh</a></li><li><a href="#">Materia Agronegocios</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h5>CONECTÁ</h5>
+      <ul><li><a href="https://instagram.com/udesavanza_ceu">Instagram</a></li><li><a href="https://www.udesa.edu.ar">UDESA</a></li><li><a href="#cta">Suscripción</a></li></ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 UdeSA Avanza — Todos los derechos reservados</span>
+    <span>QUAERERE VERUM · 1988</span>
+    <span>VICTORIA · ARGENTINA</span>
+  </div>
+</footer>
+
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+const canvas = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 50;
+
+const particleCount = 1500;
+const positions = new Float32Array(particleCount * 3);
+const colors = new Float32Array(particleCount * 3);
+const sizes = new Float32Array(particleCount);
+
+// UDESA palette: blue, green, pink, gold
+const palette = [
+  new THREE.Color('#4a86d0'),
+  new THREE.Color('#2DA343'),
+  new THREE.Color('#C183B9'),
+  new THREE.Color('#ffce5c'),
+];
+
+for (let i = 0; i < particleCount; i++) {
+  const r = 30 + Math.random() * 100;
+  const theta = Math.random() * Math.PI * 2;
+  const phi = Math.acos(Math.random() * 2 - 1);
+  positions[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+  positions[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+  positions[i*3+2] = r * Math.cos(phi) - 30;
+  const c = palette[Math.floor(Math.random() * palette.length)];
+  colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
+  sizes[i] = Math.random() * 1.5 + 0.3;
+}
+
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+const vertexShader = `
+  attribute float size;
+  attribute vec3 color;
+  varying vec3 vColor;
+  uniform float uTime;
+  void main() {
+    vColor = color;
+    vec3 p = position;
+    p.x += sin(uTime * 0.3 + position.y * 0.05) * 1.5;
+    p.y += cos(uTime * 0.2 + position.x * 0.05) * 1.5;
+    vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
+    gl_PointSize = size * (300.0 / -mvPosition.z);
+    gl_Position = projectionMatrix * mvPosition;
+  }
+`;
+const fragmentShader = `
+  varying vec3 vColor;
+  void main() {
+    vec2 c = gl_PointCoord - vec2(0.5);
+    float d = length(c);
+    float alpha = smoothstep(0.5, 0.0, d);
+    gl_FragColor = vec4(vColor, alpha * 0.85);
+  }
+`;
+const material = new THREE.ShaderMaterial({
+  uniforms: { uTime: { value: 0 } },
+  vertexShader, fragmentShader,
+  transparent: true, depthWrite: false,
+  blending: THREE.AdditiveBlending,
+});
+const particles = new THREE.Points(geometry, material);
+scene.add(particles);
+
+// Saltire (X) wireframe core - reference to UDESA Scottish heritage
+const coreGeo = new THREE.IcosahedronGeometry(8, 1);
+const coreMat = new THREE.MeshBasicMaterial({
+  color: 0x4a86d0, wireframe: true, transparent: true, opacity: 0.18
+});
+const core = new THREE.Mesh(coreGeo, coreMat);
+scene.add(core);
+
+const innerGeo = new THREE.IcosahedronGeometry(4, 0);
+const innerMat = new THREE.MeshBasicMaterial({
+  color: 0x2DA343, wireframe: true, transparent: true, opacity: 0.3
+});
+const inner = new THREE.Mesh(innerGeo, innerMat);
+scene.add(inner);
+
+const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+window.addEventListener('mousemove', (e) => {
+  mouse.tx = (e.clientX / window.innerWidth) - 0.5;
+  mouse.ty = (e.clientY / window.innerHeight) - 0.5;
+});
+
+let scrollY = 0;
+window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+
+const clock = new THREE.Clock();
+function animate() {
+  const t = clock.getElapsedTime();
+  material.uniforms.uTime.value = t;
+
+  mouse.x += (mouse.tx - mouse.x) * 0.05;
+  mouse.y += (mouse.ty - mouse.y) * 0.05;
+
+  particles.rotation.y = t * 0.05 + mouse.x * 0.5;
+  particles.rotation.x = mouse.y * 0.3;
+
+  core.rotation.x = t * 0.1;
+  core.rotation.y = t * 0.15;
+  inner.rotation.x = -t * 0.2;
+  inner.rotation.y = t * 0.25;
+
+  camera.position.z = 50 + scrollY * 0.02;
+  camera.position.y = -scrollY * 0.005;
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+const dot = document.getElementById('dot');
+const ring = document.getElementById('ring');
+let dx = 0, dy = 0, rx = 0, ry = 0;
+window.addEventListener('mousemove', (e) => {
+  dot.style.left = e.clientX + 'px';
+  dot.style.top = e.clientY + 'px';
+  dx = e.clientX; dy = e.clientY;
+});
+function followRing() {
+  rx += (dx - rx) * 0.18;
+  ry += (dy - ry) * 0.18;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(followRing);
+}
+followRing();
+
+document.querySelectorAll('[data-cursor="large"]').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('large'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('large'));
+});
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = 1;
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.05 });
+document.querySelectorAll('.program, .stat, .timeline-item, .rep-card, .ben, .frame').forEach((el, i) => {
+  el.style.opacity = 0;
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = `opacity 1s cubic-bezier(.2,.8,.2,1) ${i*30}ms, transform 1s cubic-bezier(.2,.8,.2,1) ${i*30}ms`;
+  io.observe(el);
+});
+
+// Drag-scroll on filmstrip
+const filmstrip = document.getElementById('filmstrip');
+if (filmstrip) {
+  let isDown = false, startX = 0, scrollLeft = 0;
+  filmstrip.style.cursor = 'grab';
+  filmstrip.addEventListener('mousedown', (e) => {
+    isDown = true; filmstrip.style.cursor = 'grabbing';
+    startX = e.pageX - filmstrip.offsetLeft;
+    scrollLeft = filmstrip.scrollLeft;
+  });
+  filmstrip.addEventListener('mouseleave', () => { isDown = false; filmstrip.style.cursor = 'grab'; });
+  filmstrip.addEventListener('mouseup', () => { isDown = false; filmstrip.style.cursor = 'grab'; });
+  filmstrip.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - filmstrip.offsetLeft;
+    filmstrip.scrollLeft = scrollLeft - (x - startX) * 1.5;
+  });
+}
+</script>
+</body>
+</html>

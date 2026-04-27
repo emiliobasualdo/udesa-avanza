@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UdeSA Avanza · Centro de Estudiantes Universitarios</title>
+<link rel="icon" href="assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #00529B;
+    --blue-dark: #003a72;
+    --blue-deep: #122535;
+    --green: #2DA343;
+    --pink: #C183B9;
+    --cream: #f4f1ea;
+    --paper: #e7e2d4;
+    --ink: #122535;
+    --muted: #656F77;
+    --line: rgba(18, 37, 53, 0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+  ::selection { background: var(--blue); color: var(--cream); }
+  a { color: inherit; text-decoration: none; }
+
+  /* Cursor */
+  .cursor { position: fixed; width: 10px; height: 10px; border-radius: 50%; background: var(--blue); pointer-events: none; z-index: 9999; transition: width .3s, height .3s, background .3s; transform: translate(-50%, -50%); mix-blend-mode: multiply; }
+  .cursor.large { width: 70px; height: 70px; background: rgba(0, 82, 155, 0.3); }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 24px 40px; display: flex; justify-content: space-between; align-items: center;
+    transition: background .4s, backdrop-filter .4s;
+  }
+  nav.scrolled { background: rgba(244,241,234,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); padding: 16px 40px; }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo img { height: 38px; width: auto; }
+  .logo-text { font-family: 'Amiri', serif; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  .logo-text small { display: block; font-family: 'Work Sans', sans-serif; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-top: 2px; }
+  .nav-links { display: flex; gap: 32px; list-style: none; font-size: 13px; letter-spacing: 0.05em; }
+  .nav-links a { color: var(--ink); opacity: .75; transition: opacity .3s; font-weight: 500; }
+  .nav-links a:hover { opacity: 1; color: var(--blue); }
+  .nav-cta { padding: 12px 22px; border: 1px solid var(--blue); border-radius: 100px; font-size: 13px; color: var(--blue); transition: all .3s; font-weight: 500; }
+  .nav-cta:hover { background: var(--blue); color: var(--cream); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh; position: relative; padding: 0 40px;
+    display: flex; align-items: center; overflow: hidden;
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; width: 100%;
+    align-items: center; max-width: 1500px; margin: 0 auto;
+  }
+  .hero-eyebrow { font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--blue); margin-bottom: 32px; display: flex; align-items: center; gap: 14px; font-weight: 500; }
+  .hero-eyebrow::before { content: ''; width: 50px; height: 1px; background: var(--blue); }
+  h1.hero-title {
+    font-family: 'Amiri', serif; font-weight: 400;
+    font-size: clamp(56px, 8vw, 124px); line-height: 0.96; letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+  .hero-title em { font-style: italic; color: var(--blue); }
+  .hero-desc { margin-top: 36px; font-size: 19px; line-height: 1.6; color: var(--muted); max-width: 480px; }
+  .hero-cta-row { margin-top: 48px; display: flex; gap: 24px; align-items: center; }
+  .btn-primary {
+    background: var(--blue); color: var(--cream); padding: 18px 32px; border-radius: 100px;
+    font-size: 14px; letter-spacing: 0.02em; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 10px; transition: all .4s;
+    border: none; cursor: none;
+  }
+  .btn-primary:hover { background: var(--blue-deep); transform: translateY(-2px); }
+  .btn-link { color: var(--ink); font-size: 14px; opacity: .7; transition: opacity .3s; font-weight: 500; }
+  .btn-link:hover { opacity: 1; color: var(--blue); }
+
+  .hero-visual { position: relative; aspect-ratio: 4/5; }
+  .hero-frame {
+    position: absolute; inset: 0; border-radius: 4px; overflow: hidden;
+    box-shadow: 0 30px 80px -20px rgba(18,37,53,0.3);
+  }
+  .hero-frame video {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .hero-frame::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(18,37,53,0.65) 100%);
+    pointer-events: none;
+  }
+  .hero-frame-label {
+    position: absolute; bottom: 32px; left: 32px; right: 32px; z-index: 2;
+    display: flex; justify-content: space-between; align-items: end;
+    color: var(--cream);
+  }
+  .hero-frame-label .num { font-family: 'Amiri', serif; font-size: 64px; line-height: 1; letter-spacing: -0.04em; font-weight: 400; }
+  .hero-frame-label .meta { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: .85; text-align: right; font-weight: 500; }
+
+  .hero-stats {
+    position: absolute; right: -40px; top: 50px;
+    background: var(--cream);
+    border: 1px solid var(--line); border-radius: 4px; padding: 28px;
+    box-shadow: 0 20px 50px -10px rgba(18,37,53,0.2);
+    max-width: 220px;
+  }
+  .hero-stats .label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; font-weight: 600; }
+  .hero-stats .stat { font-family: 'Amiri', serif; font-size: 40px; line-height: 1; margin-bottom: 6px; }
+  .hero-stats .det { font-size: 12px; color: var(--muted); }
+
+  .scroll-indicator {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted);
+    display: flex; flex-direction: column; align-items: center; gap: 12px; font-weight: 600;
+  }
+  .scroll-indicator::after { content: ''; width: 1px; height: 40px; background: var(--ink); animation: scrollLine 2s ease-in-out infinite; }
+  @keyframes scrollLine { 0%,100% { transform: scaleY(0.5); transform-origin: top; } 50% { transform: scaleY(1); } }
+
+  /* Marquee */
+  .marquee {
+    padding: 48px 0; overflow: hidden;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    background: var(--paper);
+  }
+  .marquee-inner { display: flex; gap: 80px; animation: scroll-x 40s linear infinite; white-space: nowrap; }
+  .marquee-item { font-family: 'Amiri', serif; font-style: italic; font-size: 56px; letter-spacing: -0.02em; color: var(--ink); display: flex; align-items: center; gap: 80px; }
+  .marquee-item span { color: var(--green); font-style: normal; }
+  @keyframes scroll-x { to { transform: translateX(-50%); } }
+
+  /* Sections */
+  section { padding: 140px 40px; max-width: 1500px; margin: 0 auto; }
+  .section-eyebrow { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--blue); margin-bottom: 24px; font-weight: 600; }
+  .section-title { font-family: 'Amiri', serif; font-size: clamp(40px, 5vw, 84px); line-height: 1.05; letter-spacing: -0.025em; }
+  .section-title em { font-style: italic; color: var(--blue); }
+
+  /* About */
+  .about { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: start; }
+  .about-text { font-size: 18px; line-height: 1.7; color: var(--ink); }
+  .about-text p + p { margin-top: 22px; }
+  .about-quote { font-family: 'Amiri', serif; font-style: italic; font-size: 28px; line-height: 1.4; color: var(--blue); margin: 32px 0; padding-left: 28px; border-left: 2px solid var(--green); }
+  .about-leaders { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); }
+  .about-leaders h4 { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; font-weight: 600; }
+  .leader { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
+  .leader span:last-child { font-family: 'Amiri', serif; font-style: italic; color: var(--blue); }
+
+  /* Pillars (8 propuestas) */
+  .pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 80px; background: var(--line); border-radius: 8px; overflow: hidden; }
+  .pillar {
+    background: var(--cream); padding: 56px 48px; position: relative;
+    cursor: none; transition: background .5s; min-height: 380px;
+    display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
+  }
+  .pillar::before {
+    content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity .8s;
+    background-size: cover; background-position: center;
+  }
+  .pillar:nth-child(1)::before { background-image: linear-gradient(rgba(0,82,155,0.78), rgba(0,82,155,0.78)), url('assets/ingresantes-1.jpg'); }
+  .pillar:nth-child(2)::before { background-image: linear-gradient(rgba(45,163,67,0.75), rgba(45,163,67,0.75)), url('assets/campus-1.jpg'); }
+  .pillar:nth-child(3)::before { background-image: linear-gradient(rgba(0,82,155,0.78), rgba(0,82,155,0.78)), url('assets/ingresantes-3.jpg'); }
+  .pillar:nth-child(4)::before { background-image: linear-gradient(rgba(18,37,53,0.78), rgba(18,37,53,0.78)), url('assets/campus-2.jpg'); }
+  .pillar:nth-child(5)::before { background-image: linear-gradient(rgba(45,163,67,0.78), rgba(45,163,67,0.78)), url('assets/ingresantes-4.jpg'); }
+  .pillar:nth-child(6)::before { background-image: linear-gradient(rgba(0,82,155,0.82), rgba(0,82,155,0.82)), url('assets/campus-3.jpg'); }
+  .pillar:nth-child(7)::before { background-image: linear-gradient(rgba(18,37,53,0.78), rgba(18,37,53,0.78)), url('assets/campus-4.jpg'); }
+  .pillar:nth-child(8)::before { background-image: linear-gradient(rgba(193,131,185,0.7), rgba(0,82,155,0.7)), url('assets/campus-5.jpg'); }
+  .pillar:hover::before { opacity: 1; }
+  .pillar:hover, .pillar:hover * { color: var(--cream); }
+  .pillar > * { position: relative; z-index: 1; transition: color .4s; }
+  .pillar .num { font-size: 11px; letter-spacing: 0.3em; opacity: .55; font-weight: 600; }
+  .pillar h3 { font-family: 'Amiri', serif; font-size: 40px; line-height: 1.05; letter-spacing: -0.02em; margin-top: 8px; }
+  .pillar p { font-size: 15px; line-height: 1.6; opacity: .8; max-width: 400px; }
+  .pillar .arrow { width: 52px; height: 52px; border: 1px solid currentColor; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all .4s; opacity: .5; }
+  .pillar:hover .arrow { opacity: 1; transform: rotate(-45deg); }
+
+  /* Beneficios — partner cards */
+  .benefits-section { background: var(--paper); padding: 140px 0; margin: 80px 0; }
+  .benefits-inner { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
+  .benefits-grid { margin-top: 80px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .benefit-card {
+    background: var(--cream); padding: 40px 32px; border-radius: 4px;
+    border: 1px solid var(--line); transition: all .4s; cursor: none;
+    display: flex; flex-direction: column; gap: 20px; min-height: 260px;
+  }
+  .benefit-card:hover { border-color: var(--blue); transform: translateY(-4px); box-shadow: 0 12px 30px -10px rgba(0,82,155,0.2); }
+  .benefit-card .brand-img { height: 48px; display: flex; align-items: center; }
+  .benefit-card .brand-img img { max-height: 48px; max-width: 140px; object-fit: contain; }
+  .benefit-card .brand-name { font-family: 'Amiri', serif; font-size: 24px; letter-spacing: -0.01em; }
+  .benefit-card .brand-disc { font-size: 13px; color: var(--blue); font-weight: 600; letter-spacing: 0.02em; }
+  .benefit-card .brand-cat { margin-top: auto; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+  /* Calendar */
+  .events-grid { margin-top: 80px; }
+  .event-row { display: grid; grid-template-columns: 80px 1fr 220px 220px 60px; gap: 40px; align-items: center; padding: 32px 0; border-bottom: 1px solid var(--line); transition: padding .4s; cursor: none; }
+  .event-row:first-child { border-top: 1px solid var(--line); }
+  .event-row:hover { padding-left: 24px; padding-right: 24px; background: var(--paper); }
+  .event-row .date { font-family: 'Amiri', serif; font-size: 36px; line-height: 1; }
+  .event-row .month { font-size: 11px; letter-spacing: 0.2em; opacity: .55; text-transform: uppercase; margin-top: 4px; font-weight: 600; }
+  .event-row .title { font-family: 'Amiri', serif; font-size: 26px; letter-spacing: -0.01em; }
+  .event-row .meta-x { font-size: 13px; opacity: .65; }
+  .event-row .arrow-mini { width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: .5; transition: all .3s; }
+  .event-row:hover .arrow-mini { opacity: 1; background: var(--green); border-color: var(--green); color: var(--cream); }
+
+  /* Locker callout */
+  .locker {
+    margin: 80px auto; max-width: 1500px; padding: 0 40px;
+  }
+  .locker-card {
+    display: grid; grid-template-columns: 1.2fr 1fr;
+    background: var(--blue-deep); color: var(--cream);
+    border-radius: 8px; overflow: hidden;
+    min-height: 380px;
+  }
+  .locker-text { padding: 56px 48px; display: flex; flex-direction: column; justify-content: space-between; }
+  .locker-text .eb { font-size: 11px; letter-spacing: 0.3em; color: var(--green); text-transform: uppercase; font-weight: 600; }
+  .locker-text h3 { font-family: 'Amiri', serif; font-size: 56px; line-height: 1; letter-spacing: -0.025em; margin-top: 16px; }
+  .locker-text p { font-size: 16px; line-height: 1.6; opacity: .8; max-width: 480px; margin-top: 20px; }
+  .locker-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 36px; padding-top: 32px; border-top: 1px solid rgba(244,241,234,0.15); }
+  .locker-meta .v { font-family: 'Amiri', serif; font-size: 28px; line-height: 1; }
+  .locker-meta .l { font-size: 11px; opacity: .6; margin-top: 6px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; }
+  .locker-img { background-image: url('assets/campus-2.jpg'); background-size: cover; background-position: center; }
+
+  /* CTA / Subscribe */
+  .cta-section { text-align: center; padding: 200px 40px; background: var(--paper); position: relative; overflow: hidden; }
+  .cta-title { font-family: 'Amiri', serif; font-size: clamp(48px, 8vw, 120px); line-height: 1.0; letter-spacing: -0.03em; max-width: 1200px; margin: 0 auto; }
+  .cta-title em { font-style: italic; color: var(--blue); }
+  .cta-section p { font-size: 18px; color: var(--muted); margin: 28px auto 0; max-width: 600px; line-height: 1.6; }
+  .cta-section .btn-primary { margin-top: 48px; }
+
+  /* Footer */
+  footer { background: var(--blue-deep); color: var(--cream); padding: 80px 40px 40px; }
+  .footer-inner { max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; }
+  .footer-brand h4 { font-family: 'Amiri', serif; font-size: 32px; margin-bottom: 16px; }
+  .footer-brand p { font-size: 14px; opacity: .7; max-width: 320px; line-height: 1.6; }
+  .footer-col h5 { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: .55; margin-bottom: 20px; font-weight: 600; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 12px; }
+  .footer-col a { color: var(--cream); font-size: 14px; opacity: .8; transition: opacity .3s; }
+  .footer-col a:hover { opacity: 1; color: var(--green); }
+  .footer-bottom { max-width: 1500px; margin: 80px auto 0; padding-top: 40px; border-top: 1px solid rgba(244,241,234,0.15); display: flex; justify-content: space-between; font-size: 12px; opacity: .55; }
+
+  @media (max-width: 900px) {
+    body { cursor: auto; }
+    .cursor { display: none; }
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 20px 60px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 60px; }
+    .hero-stats { display: none; }
+    section { padding: 80px 20px; }
+    .about { grid-template-columns: 1fr; gap: 40px; }
+    .pillars { grid-template-columns: 1fr; }
+    .pillar { min-height: 280px; padding: 40px 24px; }
+    .benefits-grid { grid-template-columns: 1fr 1fr; }
+    .event-row { grid-template-columns: 60px 1fr 60px; }
+    .event-row .meta-x { display: none; }
+    .locker-card { grid-template-columns: 1fr; }
+    .locker-img { min-height: 240px; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+
+<nav id="nav">
+  <a class="logo" href="#">
+    <img src="assets/logo.jpg" alt="CEU UdeSA Avanza" style="border-radius: 6px;" />
+    <div class="logo-text">UdeSA Avanza<small>Centro de Estudiantes Universitarios</small></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">El Centro</a></li>
+    <li><a href="#programs">Propuestas</a></li>
+    <li><a href="#benefits">Beneficios</a></li>
+    <li><a href="#events">Calendario</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Suscribirme</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow">Centro de Estudiantes Universitarios · UDESA</div>
+      <h1 class="hero-title">Un espacio para <em>mejorar</em> la experiencia universitaria.</h1>
+      <p class="hero-desc">UdeSA Avanza está formado por estudiantes que trabajan para representar tu voz, escuchar tus necesidades y transformar las ideas en propuestas concretas.</p>
+      <div class="hero-cta-row">
+        <a href="#programs" class="btn-primary" data-cursor="large">
+          Ver nuestras propuestas
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.5"/></svg>
+        </a>
+        <a href="#benefits" class="btn-link">Ver beneficios →</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-frame">
+        <video src="assets/udesa-volvemos.mp4" autoplay muted loop playsinline></video>
+        <div class="hero-frame-label">
+          <div class="num">'88</div>
+          <div class="meta">CAMPUS VICTORIA<br>QUAERERE VERUM</div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="label">Equipo CEU 2026</div>
+        <div class="stat">3</div>
+        <div class="det">Presidente · Vicepresidente · Tesorero<br>+ comisión activa de estudiantes</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">SCROLL</div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-inner">
+    <div class="marquee-item">Diálogo <span>·</span> Participación <span>·</span> Resultados <span>·</span> Comunidad <span>·</span></div>
+    <div class="marquee-item">Diálogo <span>·</span> Participación <span>·</span> Resultados <span>·</span> Comunidad <span>·</span></div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="about">
+    <div>
+      <div class="section-eyebrow">— ¿Quiénes somos?</div>
+      <h2 class="section-title">Estudiantes <em>al servicio</em> de la comunidad universitaria.</h2>
+    </div>
+    <div class="about-text">
+      <p>UdeSA Avanza es un espacio formado por estudiantes que trabajan para mejorar la experiencia universitaria en la facultad.</p>
+      <div class="about-quote">"Nuestro objetivo es construir un Centro de Estudiantes que esté verdaderamente al servicio de la comunidad universitaria, promoviendo el diálogo, la participación y una gestión que genere resultados concretos."</div>
+      <p>Trabajamos para representar los intereses de los estudiantes, escuchar sus necesidades y transformar sus ideas en propuestas concretas.</p>
+      <div class="about-leaders">
+        <h4>Mesa Ejecutiva CEU 2026</h4>
+        <div class="leader"><span>Máximo Basualdo Cibils</span><span>Presidente</span></div>
+        <div class="leader"><span>Benjamín Steed</span><span>Vicepresidente</span></div>
+        <div class="leader"><span>Tomás Massuh</span><span>Tesorero</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="programs">
+  <div class="section-eyebrow">— Nuestras Propuestas</div>
+  <h2 class="section-title">Ocho ejes para <em>transformar</em> la experiencia.</h2>
+  <div class="pillars">
+    <div class="pillar" data-cursor="large">
+      <div>
+        <div class="num">01 / DIÁLOGO</div>
+        <h3>Escuchar y actuar con compromiso</h3>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:end; gap:24px;">
+        <p>Mantenemos un canal abierto y permanente con los estudiantes para conocer sus necesidades, propuestas y preocupaciones, y transformarlas en acciones concretas.</p>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+    <div class="pillar" data-cursor="large">
+      <div>
+        <div class="num">02 / CONECTIVIDAD</div>
+        <h3>Mejora del WiFi del campus</h3>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:end; gap:24px;">
+        <p>Trabajamos para optimizar el funcionamiento del WiFi facilitando el acceso a las plataformas de uso cotidiano, sin afectar el rendimiento académico ni la seguridad digital.</p>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+    <div class="pillar" data-cursor="large">
+      <div>
+        <div class="num">03 / VOZ</div>
+        <h3>Participación estudiantil</h3>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:end; gap:24px;">
+        <p>Más canales de comunicación directa con la comunidad universitaria. Una agenda activa de propuestas y consultas que llegue a cada carrera.</p>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+    <div class="pillar" data-cursor="large">
+      <div>
+        <div class="num">04 / CAMPUS</div>
+        <h3>Sistema de estacionamiento</h3>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:end; gap:24px;">
+        <p>Impulsamos mejoras para agilizar el ingreso y egreso vehicular en el campus y facilitar la circulación diaria de los estudiantes.</p>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+    <div class="pillar" data-cursor="large">
+      <div>
+        <div class="num">05 / DEPORTES</div>
+        <h3>Vida deportiva</h3>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:end; gap:24px;">
+        <p>Promovemos el desarrollo de nuevas disciplinas deportivas y el fortalecimiento de las existentes, incentivando la participación y el acceso a instalaciones adecuadas.</p>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+    <div class="pillar" data-cursor="large">
+      <div>
+        <div class="num">06 / BENEFICIOS</div>
+        <h3>Convenios y descuentos</h3>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:end; gap:24px;">
+        <p>Generamos acuerdos con instituciones y empresas para ofrecer beneficios exclusivos, descuentos y oportunidades para la comunidad estudiantil.</p>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+    <div class="pillar" data-cursor="large">
+      <div>
+        <div class="num">07 / ESTUDIO</div>
+        <h3>Espacios de estudio</h3>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:end; gap:24px;">
+        <p>Más aulas y ambientes para el trabajo académico, individual y grupal. Iniciativas para mejorar el acceso a los espacios de estudio dentro del campus.</p>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+    <div class="pillar" data-cursor="large">
+      <div>
+        <div class="num">08 / GASTRONOMÍA</div>
+        <h3>Más variedad en el campus</h3>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:end; gap:24px;">
+        <p>Trabajamos para ampliar y mejorar la oferta alimentaria del campus, incorporando alternativas más diversas y saludables.</p>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="benefits" class="benefits-section">
+  <div class="benefits-inner">
+    <div class="section-eyebrow">— Beneficios y Convenios</div>
+    <h2 class="section-title">Tu credencial, <em>tu pase</em>.</h2>
+    <p style="font-size:18px; color: var(--muted); margin-top:24px; max-width:600px; line-height:1.6;">Acuerdos vigentes con marcas para que tu vida en UDESA sea más accesible. Presentá tu credencial digital o ingresá con tu mail @udesa.edu.ar.</p>
+
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="brand-img"><img src="assets/brand-tuni.png" alt="Tuni"></div>
+        <div>
+          <div class="brand-name">Tuni</div>
+          <div class="brand-disc">10% en la primera clase particular</div>
+        </div>
+        <div style="font-size:12px; color: var(--muted); line-height:1.6;">IRM · IPC · Economía I · Análisis Mat. I · Fund. Matemáticos I · Programación I</div>
+        <div class="brand-cat">Académicos</div>
+      </div>
+      <div class="benefit-card">
+        <div class="brand-img"><img src="assets/brand-aaci.png" alt="AACI"></div>
+        <div>
+          <div class="brand-name">AACI – Inglés</div>
+          <div class="brand-disc">25% en cursos de inglés</div>
+        </div>
+        <div style="font-size:12px; color: var(--muted); line-height:1.6;">Para alumnos · docentes · staff · graduados.<br>Arenales 1913, CABA.</div>
+        <div class="brand-cat">Académicos</div>
+      </div>
+      <div class="benefit-card">
+        <div class="brand-img"><img src="assets/brand-sony.png" alt="Sony"></div>
+        <div>
+          <div class="brand-name">Sony</div>
+          <div class="brand-disc">5–10% en compras tienda online</div>
+        </div>
+        <div style="font-size:12px; color: var(--muted); line-height:1.6;">5%: cámaras, lentes Alpha, video, consolas, VR. 10%: TV, audio, gaming.</div>
+        <div class="brand-cat">Tecnología</div>
+      </div>
+      <div class="benefit-card">
+        <div class="brand-img"><img src="assets/brand-lenovo.png" alt="Lenovo"></div>
+        <div>
+          <div class="brand-name">Lenovo</div>
+          <div class="brand-disc">Descuento exclusivo</div>
+        </div>
+        <div style="font-size:12px; color: var(--muted); line-height:1.6;">Registro con mail @udesa.edu.ar · un uso por mes.</div>
+        <div class="brand-cat">Tecnología</div>
+      </div>
+      <div class="benefit-card">
+        <div class="brand-img" style="font-family:'Amiri',serif; font-size: 32px; color: var(--blue);">Natura</div>
+        <div>
+          <div class="brand-name">Natura</div>
+          <div class="brand-disc">30% web · 35% + envío gratis app</div>
+        </div>
+        <div style="font-size:12px; color: var(--muted); line-height:1.6;">Solo compras online · solo @udesa.edu.ar · un uso por mes.</div>
+        <div class="brand-cat">Compras</div>
+      </div>
+      <div class="benefit-card">
+        <div class="brand-img"><img src="assets/brand-bowen.png" alt="Bowen"></div>
+        <div>
+          <div class="brand-name">Bowen</div>
+          <div class="brand-disc">20% + 6 cuotas sin interés</div>
+        </div>
+        <div style="font-size:12px; color: var(--muted); line-height:1.6;">Presentar credencial digital + DNI.</div>
+        <div class="brand-cat">Compras</div>
+      </div>
+      <div class="benefit-card">
+        <div class="brand-img" style="font-family:'Amiri',serif; font-size: 32px; color: var(--blue);">Avon</div>
+        <div>
+          <div class="brand-name">Avon</div>
+          <div class="brand-disc">25% web (>$25.000) · 30% app</div>
+        </div>
+        <div style="font-size:12px; color: var(--muted); line-height:1.6;">Solo compras online · solo @udesa.edu.ar · un uso por mes.</div>
+        <div class="brand-cat">Compras</div>
+      </div>
+      <div class="benefit-card">
+        <div class="brand-img" style="font-family:'Amiri',serif; font-size: 32px; color: var(--blue);">Patagonian Ski</div>
+        <div>
+          <div class="brand-name">Patagonian Ski</div>
+          <div class="brand-disc">15% en clases de ski</div>
+        </div>
+        <div style="font-size:12px; color: var(--muted); line-height:1.6;">Para toda la comunidad UDESA.</div>
+        <div class="brand-cat">Deportes</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="events">
+  <div class="section-eyebrow">— Calendario</div>
+  <h2 class="section-title">Próximas <em>citas</em> del CEU.</h2>
+  <div class="events-grid">
+    <div class="event-row" data-cursor="large">
+      <div><div class="date">02</div><div class="month">May</div></div>
+      <div class="title">Asamblea abierta · Propuestas y diálogo</div>
+      <div class="meta-x">Edificio Hirsh · 18:30</div>
+      <div class="meta-x">Para todos los estudiantes</div>
+      <div class="arrow-mini">→</div>
+    </div>
+    <div class="event-row" data-cursor="large">
+      <div><div class="date">14</div><div class="month">May</div></div>
+      <div class="title">Votación · Materia optativa Agronegocios</div>
+      <div class="meta-x">Online · 24h</div>
+      <div class="meta-x">Comunidad UDESA</div>
+      <div class="arrow-mini">→</div>
+    </div>
+    <div class="event-row" data-cursor="large">
+      <div><div class="date">21</div><div class="month">May</div></div>
+      <div class="title">Reserva de Lockers · Apertura segundo cuatrimestre</div>
+      <div class="meta-x">Edificio Hirsh</div>
+      <div class="meta-x">$25.000 por semestre</div>
+      <div class="arrow-mini">→</div>
+    </div>
+    <div class="event-row" data-cursor="large">
+      <div><div class="date">06</div><div class="month">Jun</div></div>
+      <div class="title">Encuentro deportivo · Comunidad UdeSA</div>
+      <div class="meta-x">Cancha Norte · 16:00</div>
+      <div class="meta-x">Tribunas abiertas</div>
+      <div class="arrow-mini">→</div>
+    </div>
+    <div class="event-row" data-cursor="large">
+      <div><div class="date">22</div><div class="month">Jun</div></div>
+      <div class="title">Clínica con Patagonian Ski · 15% para toda la comunidad</div>
+      <div class="meta-x">Patagonia</div>
+      <div class="meta-x">Inscripción CEU</div>
+      <div class="arrow-mini">→</div>
+    </div>
+  </div>
+</section>
+
+<div class="locker">
+  <div class="locker-card">
+    <div class="locker-text">
+      <div>
+        <div class="eb">Servicio CEU</div>
+        <h3>¡Obtené tu Locker!</h3>
+        <p>El Centro de Estudiantes gestiona lockers para que puedas guardar tus cosas en la facultad de forma segura y práctica durante el año académico.</p>
+      </div>
+      <div class="locker-meta">
+        <div><div class="v">Hirsh</div><div class="l">Ubicación</div></div>
+        <div><div class="v">$25.000</div><div class="l">por semestre</div></div>
+      </div>
+    </div>
+    <div class="locker-img"></div>
+  </div>
+</div>
+
+<section id="contact" class="cta-section">
+  <h2 class="cta-title">Suscribite al <em>CEU</em>.</h2>
+  <p>Recibí novedades, beneficios y anuncios importantes directamente en tu mail universitario. Tu voz importa.</p>
+  <a href="https://instagram.com/udesavanza_ceu" target="_blank" class="btn-primary" data-cursor="large">
+    Seguinos @udesavanza_ceu
+    <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M9 1L13 5L9 9M13 5H1" stroke="currentColor" stroke-width="1.5"/></svg>
+  </a>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>UdeSA Avanza</h4>
+      <p>Centro de Estudiantes Universitarios — CEU. Universidad de San Andrés. Vito Dumas 284, Victoria, Buenos Aires.</p>
+      <a href="https://www.udesa.edu.ar" target="_blank" style="display:inline-block; margin-top:24px; padding:12px 16px; background:rgba(244,241,234,0.06); border:1px solid rgba(244,241,234,0.12); border-radius:6px; transition: all .3s;">
+        <img src="assets/udesa-logo.jpg" alt="Universidad de San Andrés" style="height:42px; width:auto; display:block; mix-blend-mode: screen; filter: brightness(1.05);" />
+      </a>
+    </div>
+    <div class="footer-col">
+      <h5>El Centro</h5>
+      <ul>
+        <li><a href="#about">¿Quiénes somos?</a></li>
+        <li><a href="#about">Mesa Ejecutiva</a></li>
+        <li><a href="#programs">Propuestas</a></li>
+        <li><a href="#">Buzón de quejas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Comunidad</h5>
+      <ul>
+        <li><a href="#benefits">Beneficios</a></li>
+        <li><a href="#events">Calendario</a></li>
+        <li><a href="#">Lockers</a></li>
+        <li><a href="#">Materia Agronegocios</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Conectá</h5>
+      <ul>
+        <li><a href="https://instagram.com/udesavanza_ceu">Instagram</a></li>
+        <li><a href="#contact">Suscripción</a></li>
+        <li><a href="https://www.udesa.edu.ar">UDESA</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 UdeSA Avanza · Todos los derechos reservados</span>
+    <span>Quaerere Verum · 1988</span>
+  </div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('[data-cursor="large"]').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('large'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('large'));
+  });
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = 1;
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.pillar, .benefit-card, .event-row, .leader').forEach(el => {
+    el.style.opacity = 0;
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1)';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>

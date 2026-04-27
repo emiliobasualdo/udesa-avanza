@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://udesa-avanza.netlify.app/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://udesa-avanza.netlify.app/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://udesa-avanza.netlify.app/"/>
+    <image:image>
+      <image:loc>https://udesa-avanza.netlify.app/assets/og-image.jpg</image:loc>
+      <image:title>UdeSA Avanza — Centro de Estudiantes Universitarios</image:title>
+      <image:caption>Campus de la Universidad de San Andrés en Victoria, Buenos Aires</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://udesa-avanza.netlify.app/assets/campus-1.jpg</image:loc>
+      <image:title>Campus Victoria · arquitectura de vanguardia</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://udesa-avanza.netlify.app/assets/campus-2.jpg</image:loc>
+      <image:title>Aulas que inspiran · UdeSA</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://udesa-avanza.netlify.app/assets/campus-3.jpg</image:loc>
+      <image:title>Patios y verde · Campus de Victoria</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://udesa-avanza.netlify.app/assets/ingresantes-1.jpg</image:loc>
+      <image:title>Ingresantes 2026 · Universidad de San Andrés</image:title>
+    </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://udesa-avanza.netlify.app/assets/campus-1.jpg</video:thumbnail_loc>
+      <video:title>UdeSA ya está lista para recibirte</video:title>
+      <video:description>Video institucional de la Universidad de San Andrés</video:description>
+      <video:content_loc>https://udesa-avanza.netlify.app/assets/udesa-volvemos.mp4</video:content_loc>
+      <video:duration>12</video:duration>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:live>no</video:live>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://udesa-avanza.netlify.app/assets/ingresantes-1.jpg</video:thumbnail_loc>
+      <video:title>Ingresantes 2026 · primer día en UdeSA</video:title>
+      <video:description>Los ingresantes 2026 dieron su primer paso en la Universidad de San Andrés</video:description>
+      <video:content_loc>https://udesa-avanza.netlify.app/assets/ingresantes-2026-2-hd.mp4</video:content_loc>
+      <video:duration>11</video:duration>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:live>no</video:live>
+    </video:video>
+  </url>
+</urlset>
