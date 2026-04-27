@@ -48,7 +48,32 @@ Photos are served as-is (JPEGs from Universidad de San Andrés). They are pre-si
 - The site is single-screen, so `<picture>`/`srcset` would add complexity for marginal payoff
 - All images are immutable-cached for 1 year
 
-## 7. Known issues
+## 7. `<br>` + display:none gotcha
+
+When a `<br>` is hidden on mobile via `display: none`, browsers do **not** insert whitespace where it was. This caused "donde<br>las" to render as "dondelas" on phones. Fix is to put a literal space *before* the `<br>` in source markup:
+
+```html
+<h1>El espacio donde <br>las ideas...</h1>
+```
+
+When the `<br>` is hidden, the space remains and the text reads correctly. Apply this to every `<br>` that may be hidden on mobile.
+
+## 8. Touch-action on horizontal scrollers
+
+Any `overflow-x: auto` element that doesn't span the full viewport must declare `touch-action: pan-x` so vertical scrolls pass through to the page. Otherwise users get a "frozen" page when their finger is over the scroller.
+
+Spec'd in `.gallery-track`:
+
+```css
+.gallery-track {
+  overflow-x: auto;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+}
+```
+
+## 9. Known issues
 
 - iOS Safari < 15.4 doesn't support `100svh` and falls back to `100vh` (the URL-bar jump returns). Acceptable.
 - On very narrow viewports (< 320 px) the hero CTA may overlap the scroll cue. Out of scope.

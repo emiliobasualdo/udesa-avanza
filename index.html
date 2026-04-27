@@ -215,8 +215,7 @@
   /* ====== Header ====== */
   header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-    padding: 24px 40px; display: grid; grid-template-columns: 1fr auto 1fr;
-    align-items: center;
+    padding: 24px 40px; display: flex; justify-content: space-between; align-items: center;
     transition: background .4s, padding .4s;
   }
   header.scrolled { background: rgba(242, 229, 204, 0.92); backdrop-filter: blur(14px); padding: 14px 40px; border-bottom: 1px solid var(--line); }
@@ -399,6 +398,10 @@
   .gallery-track {
     display: flex; gap: 24px; padding: 0 40px; overflow-x: auto;
     scroll-snap-type: x mandatory; scrollbar-width: none;
+    /* Let vertical pans bubble up to the page; only capture horizontal */
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: auto;
   }
   .gallery-track::-webkit-scrollbar { display: none; }
   .gallery-card {
@@ -448,6 +451,26 @@
     padding: 200px 40px; background: var(--ink); color: var(--paper); position: relative; overflow: hidden;
   }
   .equipo .inner { max-width: 1400px; margin: 0 auto; }
+  .equipo-brand {
+    display: flex; align-items: center; gap: 20px;
+    padding-bottom: 60px; margin-bottom: 60px;
+    border-bottom: 1px solid rgba(242,229,204,0.15);
+  }
+  .equipo-brand img {
+    height: 72px; width: 72px; object-fit: contain; flex-shrink: 0;
+  }
+  .equipo-brand .text {
+    line-height: 1;
+  }
+  .equipo-brand .word {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400; font-size: clamp(36px, 4vw, 56px); letter-spacing: -0.02em; color: var(--paper);
+  }
+  .equipo-brand .word em { font-style: italic; color: var(--gold); }
+  .equipo-brand .small {
+    display: block; font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase;
+    color: rgba(242,229,204,0.7); margin-top: 10px; font-family: 'Inter', sans-serif; font-weight: 500;
+  }
   .equipo .header-row {
     display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-bottom: 80px;
   }
@@ -644,17 +667,17 @@
     .preloader-progress { left: 24px; right: 24px; bottom: 32px; font-size: 10px; gap: 12px; }
     .preloader-progress span:first-child { display: none; }
 
-    /* Header — collapse to logo + pill only */
-    header { padding: 14px 18px; grid-template-columns: auto 1fr auto; gap: 12px; }
+    /* Header — menu button left, pill right */
+    header { padding: 14px 18px; }
     header.scrolled { padding: 10px 18px; }
     .h-menu-btn { font-size: 0; gap: 0; padding: 8px; }
     .h-menu-icon { width: 22px; height: 14px; }
-    .h-mark { gap: 10px; justify-self: center; }
-    .h-mark .h-logo { height: 36px; width: 36px; }
-    .h-mark .word { font-size: 20px; }
-    .h-mark small { display: none; }
     .h-right { gap: 10px; }
     .h-right .pill { padding: 8px 14px; font-size: 11px; letter-spacing: 0.15em; }
+    /* Equipo brand */
+    .equipo-brand { gap: 14px; padding-bottom: 36px; margin-bottom: 36px; }
+    .equipo-brand img { height: 56px; width: 56px; }
+    .equipo-brand .small { font-size: 9px; letter-spacing: 0.3em; margin-top: 8px; }
 
     /* Hero */
     .hero { min-height: 560px; }
@@ -762,11 +785,11 @@
     .preloader-mark { font-size: 44px; }
     .preloader > div img { height: 72px !important; }
 
-    header { padding: 12px 14px; gap: 8px; }
+    header { padding: 12px 14px; }
     header.scrolled { padding: 10px 14px; }
-    .h-mark .h-logo { height: 32px; width: 32px; }
-    .h-mark .word { font-size: 18px; }
     .h-right .pill { padding: 7px 12px; font-size: 10px; }
+    .equipo-brand { gap: 12px; padding-bottom: 28px; margin-bottom: 28px; }
+    .equipo-brand img { height: 48px; width: 48px; }
 
     .hero-content { padding: 0 18px 130px; }
     .hero h1 { font-size: clamp(38px, 11vw, 52px); }
@@ -877,13 +900,6 @@
       Índice
     </button>
   </div>
-  <a class="h-mark" href="/">
-    <img src="assets/logo-transparent.png" alt="CEU" class="h-logo" />
-    <div class="h-mark-text">
-      <div class="word">UdeSA <em>Avanza</em></div>
-      <small>Centro de Estudiantes</small>
-    </div>
-  </a>
   <div class="h-right">
     <a href="https://www.udesa.edu.ar" class="hide-md">UDESA</a>
     <a href="https://instagram.com/udesavanza_ceu" class="hide-md">Instagram</a>
@@ -896,7 +912,7 @@
   <video class="hero-video" src="assets/udesa-volvemos.mp4" autoplay muted loop playsinline poster="assets/campus-1.jpg"></video>
   <div class="hero-content">
     <div class="hero-eyebrow">Universidad de San Andrés · Centro de Estudiantes</div>
-    <h1>El espacio donde<br>las ideas <em>se vuelven</em> realidad.</h1>
+    <h1>El espacio donde <br>las ideas <em>se vuelven</em> realidad.</h1>
     <p class="hero-sub">Estudiantes que trabajan para mejorar la experiencia universitaria. Diálogo abierto, propuestas concretas, comunidad activa.</p>
   </div>
   <div class="hero-controls">
@@ -1084,6 +1100,13 @@
 <!-- Equipo -->
 <section class="equipo" id="equipo-anchor">
   <div class="inner">
+    <div class="equipo-brand">
+      <img src="assets/logo-transparent.png" alt="CEU UdeSA Avanza">
+      <div class="text">
+        <div class="word">UdeSA <em>Avanza</em></div>
+        <span class="small">Centro de Estudiantes Universitarios</span>
+      </div>
+    </div>
     <div class="header-row">
       <div>
         <div class="num">— Capítulo 07 / Equipo</div>
@@ -1115,7 +1138,7 @@
 <section id="closing" class="closing">
   <video class="closing-video" src="assets/ingresantes-2026-2-hd.mp4" autoplay muted loop playsinline preload="auto"></video>
   <div class="num">— Capítulo 08 / Comunidad</div>
-  <h2>Tu voz <em>importa</em>.<br>Sumate al CEU.</h2>
+  <h2>Tu voz <em>importa</em>. <br>Sumate al CEU.</h2>
   <p class="desc">Recibí novedades, beneficios y anuncios importantes directamente en tu mail universitario.</p>
   <div class="cta-buttons">
     <a href="https://instagram.com/udesavanza_ceu" target="_blank" class="btn solid">Seguinos @udesavanza_ceu →</a>
@@ -1191,7 +1214,23 @@
   }
   menuOpen.addEventListener('click', openMenu);
   menuClose.addEventListener('click', closeMenu);
-  // Close on link click + smooth scroll to anchor
+  // Custom rAF-driven smooth scroll — works everywhere, including iframes/headless
+  // where native `behavior: 'smooth'` is silently throttled.
+  function smoothScrollTo(targetY, duration) {
+    const startY = window.pageYOffset;
+    const dist = targetY - startY;
+    if (Math.abs(dist) < 2) return;
+    const start = performance.now();
+    const ease = (t) => t < 0.5 ? 2*t*t : -1 + (4 - 2*t) * t; // easeInOutQuad
+    function step(now) {
+      const t = Math.min(1, (now - start) / duration);
+      window.scrollTo(0, startY + dist * ease(t));
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Close on link click + scroll to anchor
   menu.querySelectorAll('a[data-close]').forEach(a => {
     a.addEventListener('click', (e) => {
       const href = a.getAttribute('href');
@@ -1200,13 +1239,15 @@
         if (target) {
           e.preventDefault();
           closeMenu();
-          setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 500);
-        } else {
-          closeMenu();
+          // Wait for the slide-out, then scroll
+          setTimeout(() => {
+            const y = target.getBoundingClientRect().top + window.pageYOffset;
+            smoothScrollTo(y, 700);
+          }, 500);
+          return;
         }
-      } else {
-        closeMenu();
       }
+      closeMenu();
     });
   });
   // Close on ESC

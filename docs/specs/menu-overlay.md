@@ -8,7 +8,7 @@
 |---|---|
 | Click `#menu-open` (the burger button in the header) | Overlay slides in from the top (`translateY(-100%)` → `0`), 0.7 s `cubic-bezier(.7,0,.2,1)`, body scroll-locked |
 | Click `#menu-close` (the X button) | Overlay slides back out, body scroll restored |
-| Click any anchor link inside the overlay | Overlay closes, then 500 ms later `scrollIntoView({behavior: 'smooth'})` scrolls to the target |
+| Click any anchor link inside the overlay | Overlay closes, then 500 ms later a custom rAF-driven smooth-scroll (easeInOutQuad over 700 ms) animates to the target. Native `scrollIntoView({behavior:'smooth'})` was tried first but it is silently throttled in some embeds and headless renderers — the rAF version works everywhere. |
 | Press `Escape` while overlay is open | Same as clicking close |
 
 ## 2. Markup contract

@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.
 
 ## [Unreleased]
 
+### Changed
+- **Header**: removed the centered "UdeSA Avanza" brand mark from the navbar. Header is now flex (menu button left, "Suscribirme" pill right). Cleaner, more breathing room.
+- **Capítulo 07 (Equipo)**: brand mark relocated here as a full chapter signature — CEU logo + "UdeSA Avanza" italic, "Centro de Estudiantes Universitarios" caption, separated by a hairline rule.
+
+### Fixed
+- **Hero headline word-spacing**: "donde<br>las" smushed to "dondelas" when `<br>` was hidden on mobile. Fixed by inserting a literal space before `<br>`. Same fix applied to closing headline ("importa.<br>Sumate").
+- **Menu link smooth scroll**: native `scrollIntoView({behavior:'smooth'})` is silently throttled in some embeds and headless previews. Replaced with a custom rAF + easeInOutQuad scroller — works everywhere.
+- **Gallery vertical-scroll trap on mobile**: `touch-action: pan-x` + `overscroll-behavior-y: auto` on `.gallery-track` so vertical pans bubble up to the page. The carousel only captures horizontal gestures now.
+
 ## [1.0.0] — 2026-04-27
 
 ### Added

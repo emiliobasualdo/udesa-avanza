@@ -76,11 +76,13 @@ The page reads top-to-bottom as a print magazine. Every section has an `id` so t
 | 3 | (no id; `.chapter`) | Image left / text right | Capítulo 02 — Diálogo |
 | 4 | `programs-anchor` | Text left / image right (flipped, dark) | Capítulo 03 — Propuestas (8 items) |
 | 5 | (no id; `.chapter`) | Image left / text right | Capítulo 04 — Locker (Edificio Hirsh) |
-| 6 | `gallery-anchor` | Drag-scrollable horizontal gallery | Capítulo 05 — 8 campus images |
+| 6 | `gallery-anchor` | Drag-scrollable horizontal gallery (touch-action: pan-x) | Capítulo 05 — 8 campus images |
 | 7 | `benefits-anchor` | Two-column grid list | Capítulo 06 — 8 partner cards |
-| 8 | `equipo-anchor` | Dark band, 3 columns | Capítulo 07 — Mesa Ejecutiva |
+| 8 | `equipo-anchor` | Dark band, brand signature on top, 3 columns below | Capítulo 07 — Brand mark + Mesa Ejecutiva |
 | 9 | `closing` | Video + dark gradient | Capítulo 08 — Sumate (CTA) |
 | 10 | `footer` | 4-column footer | Brand, navigation, contacto |
+
+**Header**: as of v1.1.0 the header is just the burger button (left) and the "Suscribirme" pill (right). The brand mark moved to Capítulo 07.
 
 Plus, layered at z-index 200: the `.menu-overlay` (the burger menu).
 
