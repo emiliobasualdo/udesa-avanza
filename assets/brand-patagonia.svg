@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100" role="img" aria-label="Patagonian Ski">
+  <rect width="200" height="100" fill="#0F2C4A"/>
+  <path d="M 20 78 L 60 38 L 80 58 L 110 28 L 140 58 L 180 78 Z" fill="#fff" opacity="0.95"/>
+  <path d="M 65 38 L 60 38 L 78 56" fill="#0F2C4A" opacity="0.18"/>
+  <text x="100" y="92" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="600" font-size="9" text-anchor="middle" fill="#fff" letter-spacing="3">PATAGONIAN SKI</text>
+</svg>

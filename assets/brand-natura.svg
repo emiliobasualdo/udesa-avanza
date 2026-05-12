@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100" role="img" aria-label="Natura">
+  <rect width="200" height="100" fill="#fff"/>
+  <text x="100" y="62" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="300" font-size="32" text-anchor="middle" fill="#F37021" letter-spacing="2">natura</text>
+  <line x1="58" y1="72" x2="142" y2="72" stroke="#F37021" stroke-width="1"/>
+  <text x="100" y="86" font-family="Georgia, serif" font-style="italic" font-size="9" text-anchor="middle" fill="#F37021" letter-spacing="0.5">verdade em cosmética</text>
+</svg>

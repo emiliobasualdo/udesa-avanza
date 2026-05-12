@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100" role="img" aria-label="Dandy Restaurante">
+  <rect width="200" height="100" fill="#1A1A1A"/>
+  <text x="100" y="56" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="400" font-size="36" text-anchor="middle" fill="#D4A24C" letter-spacing="1">Dandy</text>
+  <line x1="60" y1="68" x2="140" y2="68" stroke="#D4A24C" stroke-width="0.8"/>
+  <text x="100" y="82" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="500" font-size="8" text-anchor="middle" fill="#D4A24C" letter-spacing="4">RESTAURANTE</text>
+</svg>

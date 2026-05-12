@@ -833,6 +833,294 @@
     .ben-row:hover .pct { transform: none; }
     .gallery-card:hover { transform: none; }
   }
+
+  /* ====== Novedades ====== */
+  .novedades {
+    padding: 200px 40px; max-width: 1400px; margin: 0 auto;
+  }
+  .novedades .header-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-bottom: 80px;
+  }
+  .novedades .header-row h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(40px, 5vw, 80px); line-height: 1; letter-spacing: -0.02em;
+  }
+  .novedades .header-row h2 em { font-style: italic; color: var(--gold); }
+  .novedades .header-row p { font-size: 16px; line-height: 1.6; opacity: .8; max-width: 480px; }
+  .news-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  }
+  .news-card {
+    background: var(--paper-2); border: 1px solid var(--line);
+    padding: 48px 40px; display: flex; flex-direction: column;
+    transition: transform .4s, box-shadow .4s;
+  }
+  .news-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(22,45,36,0.10); }
+  .news-card .news-tag {
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);
+    font-weight: 500; margin-bottom: 24px; display: inline-block;
+  }
+  .news-card h3 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 400;
+    font-size: clamp(28px, 3vw, 42px); line-height: 1.05; letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+  .news-card h3 em { font-style: italic; color: var(--gold); }
+  .news-card .news-body { font-size: 15px; line-height: 1.65; opacity: .85; flex: 1; }
+  .news-card .news-body p + p { margin-top: 12px; }
+  .news-card .news-meta {
+    margin-top: 28px; padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: auto 1fr; gap: 16px 24px;
+    font-size: 13px; line-height: 1.5;
+  }
+  .news-card .news-meta dt {
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ink-3);
+    font-weight: 500; padding-top: 2px;
+  }
+  .news-card .news-meta dd { font-size: 14px; }
+  .news-card .news-meta dd a { color: var(--blue); border-bottom: 1px solid currentColor; }
+  .news-card .ch-cta { margin-top: 32px; align-self: flex-start; }
+
+  /* ====== Beneficios logos ====== */
+  .ben-row .logo {
+    grid-area: logo;
+    width: 56px; height: 56px;
+    display: flex; align-items: center; justify-content: center;
+    background: #fff; border: 1px solid var(--line); border-radius: 8px;
+    overflow: hidden; flex-shrink: 0;
+  }
+  .ben-row .logo img { max-width: 80%; max-height: 80%; object-fit: contain; display: block; }
+  .ben-list-grid.with-logos .ben-row {
+    grid-template-columns: 60px 56px 1fr 1.4fr auto; gap: 24px;
+    grid-template-areas: "idx logo name det pct";
+  }
+  .ben-list-grid.with-logos .ben-row .idx { grid-area: idx; }
+  .ben-list-grid.with-logos .ben-row .name { grid-area: name; }
+  .ben-list-grid.with-logos .ben-row .det { grid-area: det; }
+  .ben-list-grid.with-logos .ben-row .pct { grid-area: pct; }
+
+  /* ====== Sumar empresa banner ====== */
+  .sumar-empresa {
+    margin: 80px auto 0; max-width: 1400px;
+    background: var(--ink); color: var(--paper);
+    padding: 64px 56px;
+    display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;
+    border-radius: 4px;
+  }
+  .sumar-empresa .se-num {
+    font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 18px; font-weight: 500;
+  }
+  .sumar-empresa h3 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(28px, 3.4vw, 44px); line-height: 1.1; letter-spacing: -0.01em;
+  }
+  .sumar-empresa h3 em { font-style: italic; color: #d8c79a; }
+  .sumar-empresa p {
+    margin-top: 16px; font-size: 15px; line-height: 1.6; opacity: .85; max-width: 580px;
+  }
+  .se-btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 18px 32px; background: var(--paper); color: var(--ink);
+    font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 500;
+    transition: background .3s, gap .3s;
+    border: 1px solid var(--paper);
+  }
+  .se-btn:hover { background: #d8c79a; gap: 20px; }
+
+  /* ====== Beneficios deportivos ====== */
+  .deportes {
+    padding: 200px 40px; max-width: 1400px; margin: 0 auto;
+    background: var(--paper);
+  }
+  .deportes .header-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-bottom: 64px;
+  }
+  .deportes .header-row h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(40px, 5vw, 80px); line-height: 1; letter-spacing: -0.02em;
+  }
+  .deportes .header-row h2 em { font-style: italic; color: var(--gold); }
+  .deportes .header-row p { font-size: 16px; line-height: 1.6; opacity: .8; max-width: 480px; }
+  .deportes .header-row p a { color: var(--blue); border-bottom: 1px solid currentColor; }
+  .deportes-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  .deporte-cat {
+    padding: 40px 0;
+    border-bottom: 1px solid var(--line);
+    display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: start;
+  }
+  .deporte-cat:nth-child(odd) { padding-right: 32px; border-right: 1px solid var(--line); }
+  .deporte-cat:nth-child(even) { padding-left: 32px; }
+  .deporte-cat .cat-name {
+    font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 28px; letter-spacing: -0.01em;
+  }
+  .deporte-cat .cat-name small {
+    display: block; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--ink-3); margin-top: 6px; font-weight: 500;
+  }
+  .deporte-cat ul { list-style: none; }
+  .deporte-cat li {
+    padding: 8px 0; border-bottom: 1px dashed rgba(22,45,36,0.12);
+    font-size: 14px; line-height: 1.5;
+  }
+  .deporte-cat li:last-child { border-bottom: 0; }
+  .deporte-cat li a {
+    color: var(--blue); display: inline-flex; align-items: center; gap: 8px;
+    transition: gap .3s, color .3s;
+  }
+  .deporte-cat li a::after {
+    content: '↗'; font-size: 11px; opacity: .7; transition: transform .3s;
+  }
+  .deporte-cat li a:hover { color: var(--ink); }
+  .deporte-cat li a:hover::after { transform: translate(2px,-2px); }
+  .deporte-cat li.no-link { color: var(--ink-2); }
+  .deporte-cat .adau-list { display: flex; flex-direction: column; gap: 10px; }
+  .deporte-cat .adau-list strong { color: var(--blue); font-weight: 600; }
+  .deporte-cat .adau-list .adau-row {
+    font-size: 14px; line-height: 1.5; padding: 6px 0; border-bottom: 1px dashed rgba(22,45,36,0.12);
+  }
+  .deporte-cat .adau-list .adau-row:last-child { border-bottom: 0; }
+  .deporte-cat .adau-list a { color: var(--blue); border-bottom: 1px solid currentColor; }
+
+  /* ====== Calendario ====== */
+  .calendario {
+    padding: 200px 40px; background: var(--ink); color: var(--paper);
+  }
+  .calendario .inner { max-width: 1400px; margin: 0 auto; }
+  .calendario .header-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-bottom: 64px;
+  }
+  .calendario .header-row .num {
+    font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 24px; font-weight: 500;
+  }
+  .calendario h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(48px, 6vw, 96px); line-height: 0.95; letter-spacing: -0.02em;
+  }
+  .calendario h2 em { font-style: italic; color: var(--gold); }
+  .calendario .intro-p { font-size: 16px; line-height: 1.6; opacity: .85; max-width: 480px; }
+  .cal-semester { margin-top: 56px; }
+  .cal-semester-title {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+    font-size: clamp(28px, 3vw, 44px); color: #d8c79a;
+    padding-bottom: 24px; margin-bottom: 24px;
+    border-bottom: 1px solid rgba(242,229,204,0.18);
+  }
+  .cal-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px;
+  }
+  .cal-month-card {
+    border: 1px solid rgba(242,229,204,0.14);
+    padding: 24px 22px; background: rgba(242,229,204,0.04);
+    display: flex; flex-direction: column; gap: 10px;
+    border-radius: 4px;
+  }
+  .cal-month-card .month-name {
+    font-family: 'Cormorant Garamond', serif; font-weight: 400;
+    font-size: 26px; letter-spacing: -0.01em; margin-bottom: 6px;
+    padding-bottom: 10px; border-bottom: 1px solid rgba(242,229,204,0.14);
+  }
+  .cal-ev {
+    font-size: 13px; line-height: 1.4; padding: 6px 10px;
+    border-radius: 3px; background: rgba(242,229,204,0.06);
+    border-left: 2px solid;
+  }
+  .cal-ev.inicio    { border-color: #22c55e; }
+  .cal-ev.apertura  { border-color: #8b5cf6; }
+  .cal-ev.parcial   { border-color: #f59e0b; }
+  .cal-ev.final     { border-color: #ef4444; }
+  .cal-ev.recup     { border-color: #14b8a6; }
+  .cal-ev.vacacion  { border-color: #60a5fa; }
+  .cal-ev.feriado   { border-color: var(--gold); }
+  .cal-ev.limite    { border-color: #ec4899; }
+  .cal-legend {
+    margin-top: 40px; padding: 20px 24px;
+    background: rgba(242,229,204,0.05); border: 1px solid rgba(242,229,204,0.12);
+    border-radius: 4px;
+    display: flex; flex-wrap: wrap; gap: 12px 24px;
+  }
+  .cal-legend .leg-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; letter-spacing: 0.05em; opacity: .85;
+  }
+  .cal-legend .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+  }
+
+  /* ====== Suscripción ====== */
+  .suscripcion {
+    padding: 200px 40px; background: var(--paper-2);
+  }
+  .suscripcion .inner { max-width: 880px; margin: 0 auto; text-align: center; }
+  .suscripcion .num {
+    font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 32px; font-weight: 500; display: inline-block;
+  }
+  .suscripcion h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(40px, 5.5vw, 84px); line-height: 1; letter-spacing: -0.02em;
+  }
+  .suscripcion h2 em { font-style: italic; color: var(--gold); }
+  .suscripcion .desc {
+    margin-top: 32px; font-size: 17px; line-height: 1.65; opacity: .85;
+    max-width: 600px; margin-left: auto; margin-right: auto;
+  }
+  .suscripcion .sub-btn {
+    margin-top: 44px; display: inline-flex; align-items: center; gap: 14px;
+    padding: 20px 36px; background: var(--ink); color: var(--paper);
+    font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 500;
+    transition: background .3s, gap .3s;
+  }
+  .suscripcion .sub-btn:hover { background: var(--ink-2); gap: 22px; }
+
+  /* ====== Responsive overrides for new sections ====== */
+  @media (max-width: 1024px) {
+    .novedades { padding: 120px 32px; }
+    .novedades .header-row { grid-template-columns: 1fr; gap: 24px; }
+    .news-grid { grid-template-columns: 1fr; gap: 24px; }
+    .deportes { padding: 120px 32px; }
+    .deportes .header-row { grid-template-columns: 1fr; gap: 24px; }
+    .deportes-grid { grid-template-columns: 1fr; }
+    .deporte-cat:nth-child(odd) { padding-right: 0; border-right: 0; }
+    .deporte-cat:nth-child(even) { padding-left: 0; }
+    .deporte-cat { grid-template-columns: 1fr; gap: 16px; }
+    .calendario { padding: 120px 32px; }
+    .calendario .header-row { grid-template-columns: 1fr; gap: 24px; }
+    .suscripcion { padding: 120px 32px; }
+    .sumar-empresa { grid-template-columns: 1fr; padding: 48px 32px; gap: 28px; text-align: left; }
+    .ben-list-grid.with-logos { grid-template-columns: 1fr; }
+    .ben-list-grid.with-logos .ben-row {
+      grid-template-columns: 40px 48px 1fr auto;
+      grid-template-areas: "idx logo name pct" "idx logo det det";
+      gap: 16px;
+    }
+    .ben-list-grid.with-logos .ben-row .det { font-size: 13px; }
+  }
+  @media (max-width: 768px) {
+    .novedades { padding: 80px 20px; }
+    .news-card { padding: 32px 24px; }
+    .deportes { padding: 80px 20px; }
+    .deportes .header-row h2 { font-size: clamp(32px, 7vw, 52px); }
+    .calendario { padding: 80px 20px; }
+    .calendario h2 { font-size: clamp(36px, 8vw, 64px); }
+    .cal-grid { grid-template-columns: 1fr; }
+    .suscripcion { padding: 80px 20px; }
+    .suscripcion h2 { font-size: clamp(32px, 8vw, 56px); }
+    .sumar-empresa { padding: 40px 24px; margin-top: 60px; }
+    .sumar-empresa h3 { font-size: clamp(24px, 5.5vw, 36px); }
+    .ben-list-grid.with-logos .ben-row {
+      grid-template-columns: 24px 40px 1fr auto;
+      grid-template-areas: "idx logo name pct" "idx logo det det";
+      gap: 10px 12px;
+    }
+    .ben-list-grid.with-logos .ben-row .logo { width: 40px; height: 40px; }
+    .ben-list-grid.with-logos .ben-row .name { font-size: 20px; }
+  }
 </style>
 </head>
 <body>
@@ -840,7 +1128,7 @@
 <!-- Preloader -->
 <div class="preloader" id="preloader">
   <div style="display:flex; flex-direction:column; align-items:center; gap:32px;">
-    <img src="assets/logo-transparent.png" alt="CEU" style="height:120px; border-radius:12px;" />
+    <img src="assets/ua-logo-thistles.png" alt="UdeSA Avanza · Centro de Estudiantes" style="height:200px; width:auto; background:#fff; border-radius:12px; padding:14px;" />
     <div class="preloader-mark">
       <span>UdeSA</span><span>Avanza</span>
     </div>
@@ -868,10 +1156,14 @@
       <a href="#hero" data-close><span class="num">01</span><span><em>Inicio</em></span></a>
       <a href="#intro" data-close><span class="num">02</span><span>Misión</span></a>
       <a href="#programs-anchor" data-close><span class="num">03</span><span>Propuestas</span></a>
-      <a href="#gallery-anchor" data-close><span class="num">05</span><span>Campus</span></a>
-      <a href="#benefits-anchor" data-close><span class="num">06</span><span>Beneficios</span></a>
-      <a href="#equipo-anchor" data-close><span class="num">07</span><span>Equipo</span></a>
-      <a href="#closing" data-close><span class="num">08</span><span>Sumate</span></a>
+      <a href="#novedades-anchor" data-close><span class="num">05</span><span>Novedades</span></a>
+      <a href="#gallery-anchor" data-close><span class="num">06</span><span>Campus</span></a>
+      <a href="#benefits-anchor" data-close><span class="num">07</span><span>Beneficios</span></a>
+      <a href="#deportes-anchor" data-close><span class="num">08</span><span>Deportes</span></a>
+      <a href="#calendario-anchor" data-close><span class="num">09</span><span>Calendario</span></a>
+      <a href="#suscripcion-anchor" data-close><span class="num">10</span><span>Suscripción</span></a>
+      <a href="#equipo-anchor" data-close><span class="num">11</span><span>Equipo</span></a>
+      <a href="#closing" data-close><span class="num">12</span><span>Sumate</span></a>
     </div>
     <div class="menu-aside">
       <div>
@@ -928,7 +1220,7 @@
   <h2>Construir un Centro de Estudiantes que esté <em>verdaderamente al servicio</em> de la comunidad universitaria.</h2>
   <div class="meta">
     <div><div class="v">8</div><div class="l">Propuestas activas</div></div>
-    <div><div class="v">8</div><div class="l">Beneficios vigentes</div></div>
+    <div><div class="v">10</div><div class="l">Convenios vigentes</div></div>
     <div><div class="v">'88</div><div class="l">Fundación UDESA</div></div>
     <div><div class="v">CEU</div><div class="l">Mesa Ejecutiva 2026</div></div>
   </div>
@@ -978,7 +1270,7 @@
 </section>
 
 <!-- Chapter 04: Campus / Locker -->
-<section class="chapter">
+<section class="chapter" id="campus-anchor">
   <div class="chapter-image" style="background-image: linear-gradient(rgba(0,0,0,0.06), rgba(0,0,0,0.20)), url('assets/campus-3.jpg');">
     <div class="img-label">Capítulo 04 — Campus</div>
     <div class="img-counter">03 / 04</div>
@@ -994,7 +1286,50 @@
       <div class="ch-list-item"><span class="num">·</span><span class="name">$25.000 / semestre</span><span class="det">Precio</span></div>
       <div class="ch-list-item"><span class="num">·</span><span class="name">Reserva por mail</span><span class="det">Cómo</span></div>
     </div>
-    <a href="#" class="ch-cta">Reservar locker →</a>
+    <a href="mailto:ceudesa@udesa.edu.ar?subject=Solicitud%20de%20locker&body=Hola%2C%20me%20gustar%C3%ADa%20reservar%20un%20locker.%0A%0ANombre%20y%20apellido%3A%20%0ACarrera%3A%20%0ACelular%3A%20%0A%0A%C2%A1Gracias!" class="ch-cta">Reservar locker →</a>
+  </div>
+</section>
+
+<!-- Chapter 05: Novedades -->
+<section class="novedades" id="novedades-anchor">
+  <div class="header-row">
+    <div>
+      <div class="section-num" style="font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; font-weight: 500;">— Capítulo 05 / Novedades</div>
+      <h2>Últimas <em>novedades</em>.</h2>
+    </div>
+    <p>Lo nuevo del Centro de Estudiantes: propuestas que estamos impulsando, servicios que gestionamos y oportunidades para que participes.</p>
+  </div>
+
+  <div class="news-grid">
+    <article class="news-card">
+      <span class="news-tag">Propuesta · Académico</span>
+      <h3>Nueva materia optativa: <em>Agronegocios</em></h3>
+      <div class="news-body">
+        <p>Desde el Centro de Estudiantes estamos explorando la posibilidad de incorporar una nueva materia optativa de Agronegocios, pensada para estudiantes de distintas carreras que quieran conocer más sobre el sector agroindustrial, uno de los pilares de la economía argentina.</p>
+        <p>Antes de avanzar con esta iniciativa, queremos conocer el interés de los estudiantes. Por eso abrimos una votación rápida donde pueden indicar si les gustaría que esta materia se incorpore a la oferta académica.</p>
+        <p>Tu opinión es muy importante para poder impulsar esta propuesta.</p>
+      </div>
+      <dl class="news-meta">
+        <dt>Carreras</dt><dd>Abierto a distintas carreras de UdeSA</dd>
+        <dt>Voto</dt><dd><a href="mailto:ceudesa@udesa.edu.ar?subject=Voto%20materia%20Agronegocios&body=Hola%2C%20quiero%20votar%20a%20favor%20de%20que%20se%20incorpore%20la%20materia%20optativa%20de%20Agronegocios.%0A%0ANombre%20y%20apellido%3A%20%0ACarrera%3A%20%0A%0A%C2%A1Gracias!">ceudesa@udesa.edu.ar</a></dd>
+      </dl>
+      <a href="mailto:ceudesa@udesa.edu.ar?subject=Voto%20materia%20Agronegocios&body=Hola%2C%20quiero%20votar%20a%20favor%20de%20que%20se%20incorpore%20la%20materia%20optativa%20de%20Agronegocios.%0A%0ANombre%20y%20apellido%3A%20%0ACarrera%3A%20%0A%0A%C2%A1Gracias!" class="ch-cta">Votar por la materia →</a>
+    </article>
+
+    <article class="news-card">
+      <span class="news-tag">Servicio CEU · Nuevo</span>
+      <h3>¡Obtené tu <em>Locker</em>!</h3>
+      <div class="news-body">
+        <p>El Centro de Estudiantes gestiona lockers para que puedas guardar tus cosas en la facultad de forma segura y práctica durante el año académico.</p>
+        <p>Mandanos un mail a <a href="mailto:ceudesa@udesa.edu.ar">ceudesa@udesa.edu.ar</a> con tu nombre, carrera y número de celular. Te confirmamos disponibilidad y te damos los pasos para completar la reserva.</p>
+      </div>
+      <dl class="news-meta">
+        <dt>Ubicación</dt><dd>Edificio Hirsh</dd>
+        <dt>Precio</dt><dd>$25.000 por semestre</dd>
+        <dt>Reserva</dt><dd><a href="mailto:ceudesa@udesa.edu.ar">ceudesa@udesa.edu.ar</a></dd>
+      </dl>
+      <a href="mailto:ceudesa@udesa.edu.ar?subject=Solicitud%20de%20locker&body=Hola%2C%20me%20gustar%C3%ADa%20reservar%20un%20locker.%0A%0ANombre%20y%20apellido%3A%20%0ACarrera%3A%20%0ACelular%3A%20%0A%0A%C2%A1Gracias!" class="ch-cta">Solicitar mi locker →</a>
+    </article>
   </div>
 </section>
 
@@ -1002,7 +1337,7 @@
 <section class="gallery-strip" id="gallery-anchor">
   <div class="header-row">
     <div>
-      <div class="section-num" style="font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; font-weight: 500;">— Capítulo 05 / Vida en UDESA</div>
+      <div class="section-num" style="font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; font-weight: 500;">— Capítulo 06 / Vida en UDESA</div>
       <h2>Una <em>casa</em> de aulas, canchas y patios.</h2>
     </div>
     <p>Postales del campus de Victoria. Fotografías oficiales de la Universidad de San Andrés que muestran lo que vivimos cada día.</p>
@@ -1039,61 +1374,299 @@
 <section class="ben-chapter" id="benefits-anchor">
   <div class="header-row">
     <div>
-      <div class="section-num" style="font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; font-weight: 500;">— Capítulo 06 / Beneficios</div>
+      <div class="section-num" style="font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; font-weight: 500;">— Capítulo 07 / Beneficios y Convenios</div>
       <h2 style="font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(40px, 5vw, 80px); line-height: 1; letter-spacing: -0.02em;">Tu credencial, <em style="font-style: italic; color: var(--gold);">tu pase</em>.</h2>
     </div>
     <p style="font-size: 16px; line-height: 1.6; opacity: .8; max-width: 480px;">Acuerdos vigentes con marcas para que tu vida en UDESA sea más accesible. Presentá tu credencial digital o ingresá con tu mail @udesa.edu.ar según el caso.</p>
   </div>
 
-  <div class="ben-list-grid">
+  <div class="ben-list-grid with-logos">
     <div class="ben-row">
       <div class="idx">i</div>
+      <div class="logo"><img src="assets/brand-tuni.png" alt="Tuni"></div>
       <div class="name">Tuni<small>Académicos</small></div>
       <div class="det">10% en la primera clase particular. IRM · IPC · Economía I · Análisis Matemático I · Programación I.</div>
       <div class="pct">−10%</div>
     </div>
     <div class="ben-row">
       <div class="idx">ii</div>
+      <div class="logo"><img src="assets/brand-aaci.png" alt="AACI"></div>
       <div class="name">AACI – Inglés<small>Académicos</small></div>
       <div class="det">25% en cursos de inglés. Para alumnos, docentes, staff y graduados. Arenales 1913, CABA.</div>
       <div class="pct">−25%</div>
     </div>
     <div class="ben-row">
       <div class="idx">iii</div>
+      <div class="logo"><img src="assets/brand-sony.png" alt="Sony"></div>
       <div class="name">Sony<small>Tecnología</small></div>
       <div class="det">5% en cámaras, lentes Alpha, video, consolas y VR. 10% en TV, audio y gaming.</div>
       <div class="pct">5–10%</div>
     </div>
     <div class="ben-row">
       <div class="idx">iv</div>
+      <div class="logo"><img src="assets/brand-lenovo.png" alt="Lenovo"></div>
       <div class="name">Lenovo<small>Tecnología</small></div>
       <div class="det">Descuento exclusivo en la tienda oficial. Registrarse con mail @udesa.edu.ar.</div>
       <div class="pct">EXCL.</div>
     </div>
     <div class="ben-row">
       <div class="idx">v</div>
+      <div class="logo"><img src="assets/brand-natura.svg" alt="Natura"></div>
       <div class="name">Natura<small>Compras</small></div>
       <div class="det">30% web · 35% + envío gratis desde la app. Solo @udesa.edu.ar, un uso por mes.</div>
       <div class="pct">−35%</div>
     </div>
     <div class="ben-row">
       <div class="idx">vi</div>
+      <div class="logo"><img src="assets/brand-bowen.png" alt="Bowen"></div>
       <div class="name">Bowen<small>Compras</small></div>
       <div class="det">20% + 6 cuotas sin interés. Presentar credencial digital + DNI.</div>
       <div class="pct">−20%</div>
     </div>
     <div class="ben-row">
       <div class="idx">vii</div>
+      <div class="logo"><img src="assets/brand-avon.svg" alt="Avon"></div>
       <div class="name">Avon<small>Compras</small></div>
       <div class="det">25% en compras > $25.000 web. 30% + envío gratis app. Solo @udesa.edu.ar.</div>
       <div class="pct">−30%</div>
     </div>
     <div class="ben-row">
       <div class="idx">viii</div>
+      <div class="logo"><img src="assets/brand-patagonia.svg" alt="Patagonian Ski"></div>
       <div class="name">Patagonian Ski<small>Deportes</small></div>
       <div class="det">15% en clases de ski para toda la comunidad UDESA.</div>
       <div class="pct">−15%</div>
     </div>
+    <div class="ben-row">
+      <div class="idx">ix</div>
+      <div class="logo"><img src="assets/brand-dandy.svg" alt="Dandy Restaurante"></div>
+      <div class="name">Dandy Restaurante<small>Gastronomía</small></div>
+      <div class="det">15% de descuento en almuerzos y cenas en las sedes Accassus, Recoleta y Santa Fe.</div>
+      <div class="pct">−15%</div>
+    </div>
+    <div class="ben-row">
+      <div class="idx">x</div>
+      <div class="logo"><img src="assets/brand-colonia-express.svg" alt="Colonia Express"></div>
+      <div class="name">Colonia Express<small>Viajes</small></div>
+      <div class="det">20% en pasajes ida y vuelta en tarifa Super Express y Super Flex saliendo desde Buenos Aires durante el plazo del convenio. No aplica por tramos.</div>
+      <div class="pct">−20%</div>
+    </div>
+  </div>
+
+  <!-- Sumar tu empresa CTA -->
+  <aside class="sumar-empresa" id="sumar-empresa-anchor">
+    <div>
+      <div class="se-num">— Convenios / Empresas</div>
+      <h3>Sumá tu empresa a la lista de <em>convenios con UdeSA</em>.</h3>
+      <p>¿Tenés una empresa o conocés una marca que quiera ofrecer un beneficio a la comunidad universitaria? Escribinos y armamos juntos el convenio. Cada nuevo acuerdo se publica en esta página y se difunde a todos los alumnos.</p>
+    </div>
+    <a href="mailto:ceudesa@udesa.edu.ar?subject=Propuesta%20de%20convenio%20con%20UdeSA&body=Hola%2C%20quiero%20proponer%20un%20convenio%20entre%20mi%20empresa%20y%20la%20comunidad%20UdeSA.%0A%0ANombre%20de%20la%20empresa%3A%20%0ARubro%3A%20%0APropuesta%20de%20beneficio%3A%20%0ANombre%20de%20contacto%3A%20%0AMail%3A%20%0ATel%C3%A9fono%3A%20%0A%0AGracias!" class="se-btn">Proponer convenio →</a>
+  </aside>
+</section>
+
+<!-- Beneficios Deportivos -->
+<section class="deportes" id="deportes-anchor">
+  <div class="header-row">
+    <div>
+      <div class="section-num" style="font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; font-weight: 500;">— Capítulo 08 / Beneficios Deportivos</div>
+      <h2>Beneficios <em>deportivos</em>.</h2>
+    </div>
+    <p>La Oficina de Deportes de UdeSA ofrece descuentos y acuerdos para que toda la Comunidad San Andrés pueda entrenar y disfrutar del deporte. Dudas o sugerencias: <a href="mailto:deportes@udesa.edu.ar">deportes@udesa.edu.ar</a>.</p>
+  </div>
+
+  <div class="deportes-grid">
+    <div class="deporte-cat">
+      <div class="cat-name">Gimnasios<small>Entrenamiento</small></div>
+      <ul>
+        <li><a href="https://docs.google.com/document/d/1OtYS0uwBwzwp1cRv1XIKcat29uO6uhyN/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Punto Training</a></li>
+        <li><a href="https://docs.google.com/document/d/1gnPVVK2I0zfxo9kbEJHM4TP1R7sfbEuV/edit?usp=drive_link&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">MTZGYM</a></li>
+        <li><a href="https://docs.google.com/document/d/16aRiJVJ-Cpid-XUhEgESws9V97RPmsVf/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Signum Fitness Club</a></li>
+        <li><a href="https://docs.google.com/document/d/10WJGuxuaK_KVzsu10FvJ7vz5g9Yl-SKu/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Body Builders</a></li>
+        <li><a href="https://docs.google.com/document/d/1uZN-kz00QYjWa4hgx7CvP3DKCavjw39o/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Megatlon</a></li>
+        <li><a href="https://drive.google.com/file/d/1OBAUb4a_2GPm4-vSHiUOA-HInZD3TS_n/view?usp=sharing" target="_blank" rel="noopener">IAS+ 24/25 Gym</a></li>
+        <li class="no-link">VUKOVA</li>
+        <li><a href="https://docs.google.com/document/d/1xh2LLPgAho0g_XbtGyJ-I-7bSz5AB0uD/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">ROCKCYCLE</a></li>
+        <li><a href="https://docs.google.com/document/d/1f7wJF_DkOb3G03ebXlIapClmOVpy_WcB/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">LGC Personal Trainer</a></li>
+      </ul>
+    </div>
+
+    <div class="deporte-cat">
+      <div class="cat-name">Yoga<small>Bienestar</small></div>
+      <ul>
+        <li><a href="https://docs.google.com/document/d/122LFpBKgCKxUMZDoWd1EAZK38_2EWQqQ/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Casa Tikun</a></li>
+        <li><a href="https://docs.google.com/document/d/1YLHOvjL5uxrrm8YoeDu8cC3rMhbcmLVx/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Yoga Baires</a></li>
+      </ul>
+    </div>
+
+    <div class="deporte-cat">
+      <div class="cat-name">Tenis y Pádel<small>Raqueta</small></div>
+      <ul>
+        <li><a href="https://docs.google.com/document/d/1RR6YpVMWTuxaWK82kjVU-BYVTpw8mff6/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Club Alemán de Punta Chica</a></li>
+        <li><a href="https://docs.google.com/document/d/1rYfwpcoEhwCmEPIa8AVrAOGDycpQ5Fj_/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Punta Chica Tenis</a></li>
+        <li><a href="https://docs.google.com/document/d/1LwSNEvcceqSgvQCCBMBrB7XPz2KYDD3Q/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Head Padel Club</a></li>
+      </ul>
+    </div>
+
+    <div class="deporte-cat">
+      <div class="cat-name">Pileta / Natación<small>Acuático</small></div>
+      <ul>
+        <li class="no-link">Community Swimming</li>
+      </ul>
+    </div>
+
+    <div class="deporte-cat">
+      <div class="cat-name">Buceo<small>Acuático</small></div>
+      <ul>
+        <li><a href="https://docs.google.com/document/d/1wjL1zQyXUMpDpN9UW3_C3Ssy9cXrnCkM/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Buceo Sport</a></li>
+      </ul>
+    </div>
+
+    <div class="deporte-cat">
+      <div class="cat-name">Actividades náuticas<small>Río de la Plata</small></div>
+      <ul>
+        <li><a href="https://docs.google.com/document/d/138HwzzGmHvAb13p30jbfUAphNTyeqgNg/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">LANAI (Windsurf & SUP)</a></li>
+        <li><a href="https://docs.google.com/document/d/13W3UOsaImj82_pVkoRXm9RufWqt8FGEl/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Selailu</a></li>
+        <li><a href="https://docs.google.com/document/d/1iIRjQz-Bq81Ax4PLrTbyrBLouX6ton4G/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Navemoción</a></li>
+        <li><a href="https://docs.google.com/document/d/1S6R0Qk7XO5nnfDAULcglltnkoLDS70s-/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Perú Beach</a></li>
+        <li><a href="https://docs.google.com/document/d/14c1h767S_lw3LsrQZRbwOhbIBqLdkIvJ/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Buena Racha Kite School</a></li>
+      </ul>
+    </div>
+
+    <div class="deporte-cat">
+      <div class="cat-name">Club Santa Bárbara<small>Sociodeportivo</small></div>
+      <ul>
+        <li><a href="https://drive.google.com/file/d/1uqIPmXd_AugelZYM83IJpu_jfkcWxlsQ/view?usp=sharing" target="_blank" rel="noopener">Beneficios para la comunidad UdeSA en el Club Santa Bárbara</a></li>
+      </ul>
+    </div>
+
+    <div class="deporte-cat">
+      <div class="cat-name">Método De Rose<small>Bienestar</small></div>
+      <ul>
+        <li><a href="https://docs.google.com/document/d/1Fh812bKdMmYvknO_o_YXnF5xmdzJBXkx/edit?usp=sharing&ouid=118298329100466934031&rtpof=true&sd=true" target="_blank" rel="noopener">Sede San Isidro</a></li>
+      </ul>
+    </div>
+
+    <div class="deporte-cat" style="grid-column: 1 / -1;">
+      <div class="cat-name">Beneficios ADAU<small>Selecciones UdeSA</small></div>
+      <div class="adau-list">
+        <div class="adau-row"><strong>Handball mixto</strong> · Viernes de 18:00 a 19:30 h — Prof. Pablo Novoa</div>
+        <div class="adau-row"><strong>Básquet femenino</strong> · Sábados de 12:00 a 13:30 h — Prof. Patricio Conde</div>
+        <div class="adau-row">Todos los entrenamientos se realizan en el <a href="https://maps.app.goo.gl/JFrp3RfzH64xkdz46" target="_blank" rel="noopener">gimnasio de la Universidad Torcuato Di Tella</a>.</div>
+        <div class="adau-row"><strong>Inscripción:</strong> enviar un correo a <a href="mailto:deportes@udesa.edu.ar">deportes@udesa.edu.ar</a> indicando Nombre y Apellido, Legajo, DNI, fecha de nacimiento y deporte al que querés sumarte.</div>
+        <div class="adau-row"><strong>Talento ADAU 2026:</strong> a confirmar en el segundo semestre.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Calendario académico 2026 -->
+<section class="calendario" id="calendario-anchor">
+  <div class="inner">
+    <div class="header-row">
+      <div>
+        <div class="num">— Capítulo 09 / Calendario</div>
+        <h2>Calendario <em>Académico 2026</em>.</h2>
+      </div>
+      <p class="intro-p">Fechas clave para no perderte ningún parcial, final, recuperatorio ni feriado. Estructurado por semestre, mes a mes.</p>
+    </div>
+
+    <div class="cal-semester">
+      <div class="cal-semester-title">Primer Semestre</div>
+      <div class="cal-grid">
+        <div class="cal-month-card">
+          <div class="month-name">Enero</div>
+          <div class="cal-ev feriado">Feriado: 25</div>
+        </div>
+        <div class="cal-month-card">
+          <div class="month-name">Febrero</div>
+          <div class="cal-ev apertura">Acto de apertura</div>
+          <div class="cal-ev feriado">Feriados: 16 y 17</div>
+        </div>
+        <div class="cal-month-card">
+          <div class="month-name">Marzo</div>
+          <div class="cal-ev inicio">Comienzo del semestre</div>
+          <div class="cal-ev limite">Vence plazo agregar/abandonar materias</div>
+          <div class="cal-ev feriado">Feriado: 24</div>
+        </div>
+        <div class="cal-month-card">
+          <div class="month-name">Abril</div>
+          <div class="cal-ev feriado">Feriados: 2 y 3</div>
+          <div class="cal-ev limite">Último día baja por Gestión: 24</div>
+          <div class="cal-ev parcial">Parciales: 27 abr – 2 may</div>
+        </div>
+        <div class="cal-month-card">
+          <div class="month-name">Mayo</div>
+          <div class="cal-ev parcial">Parciales: 3 – 9 may</div>
+          <div class="cal-ev feriado">Feriados: 1 y 25</div>
+        </div>
+        <div class="cal-month-card">
+          <div class="month-name">Junio</div>
+          <div class="cal-ev final">Finales: 15 – 27 jun</div>
+          <div class="cal-ev feriado">Feriados: 15 y 20</div>
+        </div>
+        <div class="cal-month-card">
+          <div class="month-name">Julio</div>
+          <div class="cal-ev final">Finales: 1 – 4 jul</div>
+          <div class="cal-ev recup">Recuperatorios: 13 – 18 jul</div>
+          <div class="cal-ev vacacion">Vacaciones: 19 – 25 jul</div>
+          <div class="cal-ev feriado">Feriado: 9</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cal-semester">
+      <div class="cal-semester-title">Segundo Semestre</div>
+      <div class="cal-grid">
+        <div class="cal-month-card">
+          <div class="month-name">Agosto</div>
+          <div class="cal-ev inicio">Comienzo del semestre</div>
+          <div class="cal-ev limite">Vence plazo agregar/abandonar materias</div>
+          <div class="cal-ev feriado">Feriado: 17</div>
+        </div>
+        <div class="cal-month-card">
+          <div class="month-name">Septiembre</div>
+          <div class="cal-ev limite">Último día baja por Gestión: 25</div>
+          <div class="cal-ev parcial">Parciales: 28 – 30 sep</div>
+        </div>
+        <div class="cal-month-card">
+          <div class="month-name">Octubre</div>
+          <div class="cal-ev parcial">Parciales: 5 – 10 oct</div>
+          <div class="cal-ev feriado">Feriado: 12</div>
+        </div>
+        <div class="cal-month-card">
+          <div class="month-name">Noviembre</div>
+          <div class="cal-ev final">Finales: 14 – 28 nov</div>
+          <div class="cal-ev feriado">Feriado: 23</div>
+        </div>
+        <div class="cal-month-card">
+          <div class="month-name">Diciembre</div>
+          <div class="cal-ev final">Finales: 14 – 19 dic</div>
+          <div class="cal-ev recup">Recuperatorios: 27 – 31 dic</div>
+          <div class="cal-ev feriado">Feriados: 8 y 25</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cal-legend">
+      <div class="leg-item"><span class="dot" style="background:#22c55e"></span>Inicio</div>
+      <div class="leg-item"><span class="dot" style="background:#8b5cf6"></span>Apertura</div>
+      <div class="leg-item"><span class="dot" style="background:#f59e0b"></span>Parciales</div>
+      <div class="leg-item"><span class="dot" style="background:#ef4444"></span>Finales</div>
+      <div class="leg-item"><span class="dot" style="background:#14b8a6"></span>Recuperatorios</div>
+      <div class="leg-item"><span class="dot" style="background:#60a5fa"></span>Vacaciones</div>
+      <div class="leg-item"><span class="dot" style="background:#ec4899"></span>Plazo límite</div>
+      <div class="leg-item"><span class="dot" style="background:#b08d4f"></span>Feriados</div>
+    </div>
+  </div>
+</section>
+
+<!-- Suscripción -->
+<section class="suscripcion" id="suscripcion-anchor">
+  <div class="inner">
+    <div class="num">— Capítulo 10 / Suscripción</div>
+    <h2>Suscribite al <em>Centro de Estudiantes</em>.</h2>
+    <p class="desc">Recibí novedades, beneficios y anuncios importantes directamente en tu mail universitario. Hacé click abajo para suscribirte a través del sistema de gestión de UdeSA.</p>
+    <a href="https://gestion.udesa.edu.ar/subscriptions" target="_blank" rel="noopener" class="sub-btn">Suscribirme →</a>
   </div>
 </section>
 
@@ -1109,7 +1682,7 @@
     </div>
     <div class="header-row">
       <div>
-        <div class="num">— Capítulo 07 / Equipo</div>
+        <div class="num">— Capítulo 11 / Equipo</div>
         <h2>Las personas detrás de las <em>decisiones</em>.</h2>
       </div>
       <p class="intro-p">El equipo está conformado por estudiantes comprometidos con construir una comunidad universitaria más participativa.</p>
@@ -1137,12 +1710,12 @@
 <!-- Closing -->
 <section id="closing" class="closing">
   <video class="closing-video" src="assets/ingresantes-2026-2-hd.mp4" autoplay muted loop playsinline preload="auto"></video>
-  <div class="num">— Capítulo 08 / Comunidad</div>
+  <div class="num">— Capítulo 12 / Comunidad</div>
   <h2>Tu voz <em>importa</em>. <br>Sumate al CEU.</h2>
   <p class="desc">Recibí novedades, beneficios y anuncios importantes directamente en tu mail universitario.</p>
   <div class="cta-buttons">
-    <a href="https://instagram.com/udesavanza_ceu" target="_blank" class="btn solid">Seguinos @udesavanza_ceu →</a>
-    <a href="https://www.udesa.edu.ar" target="_blank" class="btn line">Ir a UDESA →</a>
+    <a href="https://gestion.udesa.edu.ar/subscriptions" target="_blank" class="btn solid">Suscribirme →</a>
+    <a href="https://instagram.com/udesavanza_ceu" target="_blank" class="btn line">Seguinos @udesavanza_ceu →</a>
   </div>
 </section>
 
@@ -1164,27 +1737,29 @@
     <div class="footer-col">
       <h5>Centro</h5>
       <ul>
-        <li><a href="#">¿Quiénes somos?</a></li>
-        <li><a href="#">Mesa Ejecutiva</a></li>
-        <li><a href="#">Estatuto</a></li>
-        <li><a href="#">Buzón propuestas</a></li>
+        <li><a href="#intro">¿Quiénes somos?</a></li>
+        <li><a href="#equipo-anchor">Mesa Ejecutiva</a></li>
+        <li><a href="#programs-anchor">Propuestas</a></li>
+        <li><a href="mailto:ceudesa@udesa.edu.ar">Buzón propuestas</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h5>Comunidad</h5>
       <ul>
-        <li><a href="#">8 Propuestas</a></li>
-        <li><a href="#">Beneficios</a></li>
-        <li><a href="#">Lockers Hirsh</a></li>
-        <li><a href="#">Materia Agronegocios</a></li>
+        <li><a href="#novedades-anchor">Novedades</a></li>
+        <li><a href="#benefits-anchor">Beneficios</a></li>
+        <li><a href="#deportes-anchor">Beneficios deportivos</a></li>
+        <li><a href="#calendario-anchor">Calendario 2026</a></li>
+        <li><a href="#sumar-empresa-anchor">Sumar tu empresa</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h5>Conectá</h5>
       <ul>
-        <li><a href="https://instagram.com/udesavanza_ceu">Instagram</a></li>
-        <li><a href="https://www.udesa.edu.ar">UDESA</a></li>
-        <li><a href="#">Newsletter</a></li>
+        <li><a href="https://instagram.com/udesavanza_ceu" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.udesa.edu.ar" target="_blank" rel="noopener">UDESA</a></li>
+        <li><a href="#suscripcion-anchor">Suscripción</a></li>
+        <li><a href="mailto:ceudesa@udesa.edu.ar">ceudesa@udesa.edu.ar</a></li>
       </ul>
     </div>
   </div>
