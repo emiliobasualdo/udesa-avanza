@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100" role="img" aria-label="Orione Bar">
+  <rect width="200" height="100" fill="#2A1810"/>
+  <text x="100" y="56" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="400" font-size="32" text-anchor="middle" fill="#E8B86D" letter-spacing="1">Orione</text>
+  <line x1="60" y1="68" x2="140" y2="68" stroke="#E8B86D" stroke-width="0.8"/>
+  <text x="100" y="82" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="500" font-size="8" text-anchor="middle" fill="#E8B86D" letter-spacing="4">BAR · VICTORIA</text>
+</svg>

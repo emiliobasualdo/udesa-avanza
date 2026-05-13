@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100" role="img" aria-label="Kobito">
+  <rect width="200" height="100" fill="#FFFFFF"/>
+  <ellipse cx="100" cy="34" rx="22" ry="8" fill="#2B2B2B"/>
+  <path d="M 92 34 Q 100 22 108 34 Z" fill="#3F3F3F"/>
+  <circle cx="100" cy="46" r="10" fill="#FAF6EE" stroke="#2B2B2B" stroke-width="1.5"/>
+  <circle cx="97" cy="45" r="1" fill="#2B2B2B"/>
+  <circle cx="103" cy="45" r="1" fill="#2B2B2B"/>
+  <text x="100" y="86" font-family="Georgia, serif" font-style="italic" font-weight="500" font-size="20" text-anchor="middle" fill="#2B2B2B" letter-spacing="3">Kobito</text>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100" role="img" aria-label="Kopi Café">
+  <rect width="200" height="100" fill="#FFFFFF"/>
+  <circle cx="100" cy="42" r="20" fill="none" stroke="#3E2C20" stroke-width="2"/>
+  <path d="M 84 38 Q 100 30 116 38" fill="none" stroke="#A87A4A" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 84 44 Q 100 36 116 44" fill="none" stroke="#A87A4A" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+  <text x="100" y="86" font-family="Georgia, serif" font-weight="600" font-size="18" text-anchor="middle" fill="#3E2C20" letter-spacing="4">KOPI</text>
+</svg>
