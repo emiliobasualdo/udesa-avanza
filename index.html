@@ -448,9 +448,24 @@
 
   /* Equipo */
   .equipo {
-    padding: 200px 40px; background: var(--ink); color: var(--paper); position: relative; overflow: hidden;
+    padding: 200px 40px; background: var(--ink); color: var(--paper); position: relative;
+    isolation: isolate;
   }
-  .equipo .inner { max-width: 1400px; margin: 0 auto; }
+  .equipo-bg {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
+  }
+  .equipo-video {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0.18; filter: contrast(1.05) saturate(1.05) brightness(0.85);
+  }
+  .equipo-bg::after {
+    content: ''; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(22,45,36,0.92) 0%, rgba(22,45,36,0.78) 50%, rgba(22,45,36,0.95) 100%),
+      radial-gradient(ellipse at center, transparent 0%, rgba(22,45,36,0.55) 100%);
+  }
+  .equipo .inner { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+  .equipo h2 { padding-left: 0.06em; }
   .equipo-brand {
     display: flex; align-items: center; gap: 20px;
     padding-bottom: 60px; margin-bottom: 60px;
@@ -490,44 +505,6 @@
   .leader .role { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; font-weight: 500; }
   .leader .name { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(32px, 3vw, 48px); line-height: 1; letter-spacing: -0.015em; }
   .leader .desc { margin-top: 16px; font-size: 14px; line-height: 1.6; opacity: .75; max-width: 280px; }
-
-  /* Contact / closing */
-  .closing {
-    min-height: 100vh; position: relative; overflow: hidden;
-    background: var(--ink);
-    color: var(--paper);
-    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-    padding: 200px 40px 160px;
-  }
-  .closing-video {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: .65;
-    filter: contrast(1.08) saturate(1.12);
-  }
-  .closing::before {
-    content: ''; position: absolute; inset: 0; z-index: 1;
-    background:
-      linear-gradient(180deg, rgba(22,45,36,0.95) 0%, rgba(22,45,36,0.55) 30%, rgba(22,45,36,0.55) 70%, rgba(22,45,36,0.95) 100%),
-      radial-gradient(ellipse at center, transparent 0%, rgba(22,45,36,0.6) 100%);
-    pointer-events: none;
-  }
-  .closing > * { position: relative; z-index: 2; }
-  .closing .num { font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: #d8c79a; margin-bottom: 32px; font-weight: 500; }
-  .closing h2 {
-    font-family: 'Cormorant Garamond', serif; font-weight: 300;
-    font-size: clamp(56px, 9vw, 144px); line-height: 0.96; letter-spacing: -0.025em;
-    max-width: 1200px;
-  }
-  .closing h2 em { font-style: italic; color: #d8c79a; }
-  .closing .desc { margin-top: 32px; font-size: 18px; max-width: 540px; opacity: .9; line-height: 1.6; }
-  .closing .cta-buttons { margin-top: 56px; display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-  .closing .btn {
-    padding: 18px 32px; border-radius: 0; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase;
-    transition: all .3s; display: inline-flex; align-items: center; gap: 12px; font-weight: 500;
-  }
-  .closing .btn.solid { background: var(--paper); color: var(--ink); }
-  .closing .btn.solid:hover { background: #d8c79a; }
-  .closing .btn.line { color: var(--paper); border: 1px solid var(--paper); }
-  .closing .btn.line:hover { background: var(--paper); color: var(--ink); }
 
   /* Footer */
   footer { background: var(--ink); color: var(--paper); padding: 80px 40px 32px; }
@@ -658,9 +635,6 @@
     .menu-aside .menu-contact { font-size: 18px; }
     .menu-body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
-    /* Closing — fix overlap with video edge */
-    .closing { padding: 140px 24px 120px; }
-
     /* Preloader */
     .preloader-mark { font-size: 56px; gap: 8px; }
     .preloader > div img { height: 88px !important; }
@@ -755,15 +729,6 @@
     .leader .role { font-size: 10px; letter-spacing: 0.25em; margin-bottom: 12px; }
     .leader .name { font-size: 28px; }
     .leader .desc { margin-top: 12px; font-size: 13px; max-width: 100%; }
-
-    /* Closing */
-    .closing { padding: 100px 24px; min-height: auto; }
-    .closing .num { font-size: 10px; letter-spacing: 0.3em; margin-bottom: 20px; }
-    .closing h2 { font-size: clamp(40px, 10vw, 64px); line-height: 1.0; }
-    .closing h2 br { display: none; }
-    .closing .desc { margin-top: 24px; font-size: 15px; }
-    .closing .cta-buttons { margin-top: 40px; gap: 14px; flex-direction: column; width: 100%; max-width: 320px; }
-    .closing .btn { width: 100%; justify-content: center; padding: 16px 20px; font-size: 11px; letter-spacing: 0.25em; }
 
     /* Footer */
     footer { padding: 60px 24px 28px; }
@@ -1672,6 +1637,9 @@
 
 <!-- Equipo -->
 <section class="equipo" id="equipo-anchor">
+  <div class="equipo-bg" aria-hidden="true">
+    <video class="equipo-video" src="assets/ingresantes-2026-2-hd.mp4" autoplay muted loop playsinline preload="auto"></video>
+  </div>
   <div class="inner">
     <div class="equipo-brand">
       <img src="assets/logo-transparent.png" alt="CEU UdeSA Avanza">
@@ -1704,18 +1672,6 @@
         <p class="desc">Mesa Ejecutiva del Centro de Estudiantes. Administración del CEU.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- Closing -->
-<section id="closing" class="closing">
-  <video class="closing-video" src="assets/ingresantes-2026-2-hd.mp4" autoplay muted loop playsinline preload="auto"></video>
-  <div class="num">— Capítulo 12 / Comunidad</div>
-  <h2>Tu voz <em>importa</em>. <br>Sumate al CEU.</h2>
-  <p class="desc">Recibí novedades, beneficios y anuncios importantes directamente en tu mail universitario.</p>
-  <div class="cta-buttons">
-    <a href="https://gestion.udesa.edu.ar/subscriptions" target="_blank" class="btn solid">Suscribirme →</a>
-    <a href="https://instagram.com/udesavanza_ceu" target="_blank" class="btn line">Seguinos @udesavanza_ceu →</a>
   </div>
 </section>
 
